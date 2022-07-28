@@ -15,8 +15,12 @@ pip install -U poetry
 sudo apt install curl 
 
 
-mkdir temp
-cd temp
+
+
+TEMP_DIR=$(mktemp -d -p . user_account_XXXXXXXXXX)
+cd $TEMP_DIR
+
+
 curl -L -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh 
 ./Miniconda3-latest-Linux-x86_64.sh

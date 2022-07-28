@@ -11,13 +11,13 @@ https://wiki.archlinux.org/title/Realtime_kernel_patchset
 # kernel version without -generic flag
 KERNEL_VERSION=`uname -r | sed 's/-generic//g'`
 
-if [ ${KERNEL_VERSION} -ne "5.15.0-41"]; then
+if [[ ${KERNEL_VERSION} -ne "5.15.0-41" ]]; then
     echo "Script was written for a different kernel version"
     return
 fi
 
-mkdir kernel-${KERNEL_VERION}-rt
-cd kernel-${KERNEL_VERION}-rt
+mkdir kernel-${KERNEL_VERSION}-rt
+cd kernel-${KERNEL_VERSION}-rt
 
 
 # install dependencies
@@ -43,6 +43,9 @@ curl -SLO https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/5.15/patc
 tar -xf linux-5.15.1.tar.xz
 cd linux-5.15.1
 xzcat ../patch-5.15*.patch.xz | patch -p1
+
+
+exit 0
 
 cp /boot/config-`uname -r`.config
 
