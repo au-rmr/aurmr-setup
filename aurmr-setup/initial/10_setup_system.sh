@@ -36,3 +36,9 @@ sudo ubuntu-drivers autoinstall
 # ceate ssh key
 
 ssh-keygen
+
+
+# hostname
+
+echo """Set the hostname with
+sudo hostnamectl set-hostname  <aurmr-perception/aurmr-control>"""

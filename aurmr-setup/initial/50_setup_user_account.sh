@@ -31,3 +31,16 @@ conda install mamba -c conda-forge
 sudo apt install git
 git config --global user.email "amazon-manipulation@cs.washington.edu"
 git config --global user.name "UW Amazon Manipulation Project"
+
+
+# setup fzf
+
+cat >> $HOME/.bashrc <<EOF
+if [ -f /usr/share/doc/fzf/examples/completion.bash ]; then
+	source /usr/share/doc/fzf/examples/completion.bash
+
+fi
+if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
+	source /usr/share/doc/fzf/examples/key-bindings.bash
+fi
+EOF
