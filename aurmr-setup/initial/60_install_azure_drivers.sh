@@ -6,7 +6,7 @@ curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 # we have to use the bionic repository, i.e. packages for Ubuntu 18.04.
 #curl -sSL https://packages.microsoft.com/config/ubuntu/18.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
 
-cat >> /etc/apt/sources.list.d/microsoft.list <<EOF
+sudo tee /etc/apt/sources.list.d/microsoft.list <<EOF
 deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.04/prod bionic main
 # deb-src https://packages.microsoft.com/ubuntu/18.04/prod bionic main
 EOF
