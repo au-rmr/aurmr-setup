@@ -43,4 +43,6 @@ fi
 if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
 	source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
+
+export PATH=$PATH:$HOME/.local/bin
 EOF
