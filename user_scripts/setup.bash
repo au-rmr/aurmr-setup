@@ -1,4 +1,10 @@
 function activate() {
+
+	if [ -n "$ROS_VERSION" ]; then
+		echo "ROS environment already sourced. Aborting"
+		return
+	fi
+
 	if [ -n "$1" ]; then
 		$WORKSPACE_NAME=$i
 		echo $WORKSPACE_NAME > $HOME/.active_workspace
