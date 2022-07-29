@@ -49,7 +49,6 @@ def system():
 
 @cli.command()
 @click.argument('workspace_name', type=str)
-@click.option('--software', prompt=True, type=click.Choice(get_repositories()), cls=QuestionaryCheckbox)
 def init(workspace_name):
     workspace_full_path = os.path.join(WORKSPACE_DIR, workspace_name)
     workspace_full_path = os.path.expanduser(workspace_full_path)
@@ -61,8 +60,6 @@ def init(workspace_name):
         cmd = f'{script_full_path} {workspace_full_path}'
         subprocess.run(cmd, shell=True, check=True)
 
-        
-
 
 def get_all_workspaces() -> List[str]:
     workspaces = os.path.expanduser(WORKSPACE_DIR)
@@ -70,7 +67,7 @@ def get_all_workspaces() -> List[str]:
 
 
 @cli.command()
-def update_workspace():
+def update():
     workspace_name = get_active_workspace()
     if not workspace_name:
         logger.error('Select a workspace first')
