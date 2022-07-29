@@ -6,7 +6,7 @@ function activate() {
 	fi
 
 	if [ -n "$1" ]; then
-		$WORKSPACE_NAME=$i
+		WORKSPACE_NAME=$i
 		echo $WORKSPACE_NAME > $HOME/.active_workspace
 	else
 		aurmr workspace select;
