@@ -39,7 +39,10 @@ git config --global user.email "amazon-manipulation@cs.washington.edu"
 git config --global user.name "UW Amazon Manipulation Project"
 
 
-# setup fzf
+# setup bash: configure fzf, PATH and user script
+user_setup_script=$( dirname -- "$0"; )
+user_setup_script="${user_setup_script}/../user_scripts/setup.bash"
+user_setup_script=$( readlink -f "${user_setup_script}" )
 
 cat >> $HOME/.bashrc <<EOF
 if [ -f /usr/share/doc/fzf/examples/completion.bash ]; then
@@ -50,6 +53,7 @@ if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
 	source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
 
+source $user_setup_script
 export PATH=\$PATH:$HOME/.local/bin
 EOF
 
