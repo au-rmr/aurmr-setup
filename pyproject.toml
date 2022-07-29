@@ -6,7 +6,7 @@ authors = ["Markus Grotz <grotz@uw.edu>"]
 packages = [{include = "aurmr-setup"}, {include = "system_scripts"}, {include = "user_scripts"}]
 
 [tool.poetry.dependencies]
-python = "^3"
+python = ">=3.8,<4.0"
 rich-click = "^1"
 questionary = "^1.10"
 
