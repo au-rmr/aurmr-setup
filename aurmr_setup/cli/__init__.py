@@ -37,7 +37,8 @@ class QuestionaryCheckbox(click.Option):
     def prompt_for_value(self, ctx):
         if len(self.type.choices) == 1:
             return self.type.choices[0]
-        return questionary.checkbox(self.prompt, choices=self.type.choices).unsafe_ask()
+        choices = questionary.checkbox(self.prompt, choices=self.type.choices).unsafe_ask()
+        return ','.join(choices)
 
 
 class QuestionaryChoice(click.Option):
@@ -119,6 +120,24 @@ def remove(workspace):
         rmtree(workspace_full_path)
 
 
+def get_user_scripts() -> List[str]:
+    return [os.path.splitext(s)[0]
+            for s in files(user_scripts)
+            if s.endswith('.sh')]
+
+
+@workspace.command()
+@click.option('--software', prompt=True, type=click.Choice(get_user_scripts()), cls=QuestionaryCheckbox)
+@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=QuestionaryChoice)
+def install(software: str, workspace: str):
+    print(f'installing {software}')
+    for script_name in software.split(','):
+        logger.info('Running script %s', script_name)
+        script = f'{script_name}.sh'
+        with path(user_scripts, script) as script_full_path:
+            subprocess.run(script_full_path, check=True)
+ 
+
 @workspace.command()
 def update():
     workspace_name = get_active_workspace()
@@ -142,9 +161,9 @@ def get_system_scripts() -> List[str]:
 
 @system.command()
 @click.option('--software', prompt=True, type=click.Choice(get_system_scripts()), cls=QuestionaryCheckbox)
-def prepare(software_scripts: List[str]):
-    for script_name in software_scripts:
+def prepare(software: str):
+    for script_name in software_scripts.split(','):
         logger.info('Running script %s', script_name)
         script = f'{script_name}.sh'
         with path(system_scripts, script) as script_full_path:
-            subprocess.run(script_full_path, shell=True, check=True)
+            subprocess.run(script_full_path, check=True)
