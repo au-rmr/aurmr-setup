@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "aurmr-setup"
+version = "0.1.0"
+description = ""
+authors = ["Markus Grotz <grotz@uw.edu>"]
+packages = [{include = "aurmr-setup"}, {include = "system_scripts"}, {include = "user_scripts"}]
+
+[tool.poetry.dependencies]
+python = "^3"
+rich-click = "^1"
+questionary = "^1.10"
+
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+aurmr = 'aurmr-setup.cli:cli'
