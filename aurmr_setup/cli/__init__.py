@@ -102,7 +102,7 @@ def select(workspace: str):
         workspace = questionary.text('Name of the new workspace:').ask()
         if not workspace:
             print('No workspace selected')
-            return
+            sys.exit(1)
         create_workspace(workspace)
     with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
         f.write(workspace)
