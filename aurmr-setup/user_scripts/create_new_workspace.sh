@@ -25,6 +25,7 @@ conda config --env --add channels robostack
 
 
 mamba install ros-noetic-desktop-full
+mamba install ros-noetic-moveit-servo
 # mamba install ros-noetic-desktop
 # mamba install ros-noetic-image-geometry
 # mamba install ros-noetic-camera-info-manager
