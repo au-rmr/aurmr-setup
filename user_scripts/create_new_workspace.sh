@@ -36,7 +36,7 @@ mamba install -y compilers cmake pkg-config make ninja colcon-common-extensions
 mamba install -y catkin_tools
 
 conda deactivate 
-conda activate $WORSPACE_NAME
+conda activate $WORKSPACE_NAME
 
 #mamba install rosdep
 #rosdep init
