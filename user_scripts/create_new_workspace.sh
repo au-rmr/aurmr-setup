@@ -46,10 +46,10 @@ conda activate $WORSPACE_NAME
 mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
 cd $HOME/workspaces/$WORKSPACE_NAME/src
 
-git clone git@github.com:microsoft/Azure_Kinect_ROS_Driver.git
 git clone git@github.com:au-rmr/aurmr_perception.git
 git clone git@github.com:au-rmr/aurmr_tahoma.git
 
+#git clone git@github.com:microsoft/Azure_Kinect_ROS_Driver.git
 #git clone git@github.com:au-rmr/aurmr_storm.git
 #git clone git@github.com:au-rmr/aurmr_web_interface.git
 
