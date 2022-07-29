@@ -53,5 +53,20 @@ git clone git@github.com:au-rmr/aurmr_tahoma.git
 #git clone git@github.com:au-rmr/aurmr_storm.git
 #git clone git@github.com:au-rmr/aurmr_web_interface.git
 
-cd ..
+#cd ..
+#catkin build
+
+
+echo """
+=========================================
+Done setting up workspace $WORKSPACE_NAME
+=========================================
+
+You can now run activate $WORKSPACE_NAME or 
+simply type 'activate'. 
+
+To build your workspace use catkin build, i.e.
+
+cd $HOME/workspaces/$WORKSPACE_NAME/
 catkin build
+"""
