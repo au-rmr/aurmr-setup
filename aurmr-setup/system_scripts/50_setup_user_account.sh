@@ -15,8 +15,6 @@ pip install -U poetry
 sudo apt install curl 
 
 
-
-
 TEMP_DIR=$(mktemp -d -p . user_account_XXXXXXXXXX)
 cd $TEMP_DIR
 
@@ -51,5 +49,12 @@ if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
 	source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
 
-export PATH=$PATH:$HOME/.local/bin
+export PATH=\$PATH:$HOME/.local/bin
 EOF
+
+ssh-keyscan github.com | tee -a $HOME/.ssh/known_hosts 
+ssh-keyscan gitlab.com | tee -a $HOME/.ssh/known_hosts 
+
+ssh-keyscan 10.158.54.167 | tee -a $HOME/.ssh/known_hosts 
+ssh-keyscan 10.158.54.168 | tee -a $HOME/.ssh/known_hosts 
+
