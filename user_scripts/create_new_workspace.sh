@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash -ex
 
 if [ -n "$1" ]; then
 	echo "workspace name = $1"
