@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -ex
 
 if [ -n "$1" ]; then
 	echo "workspace name = $1"
@@ -8,6 +8,8 @@ else
 fi
 
 WORKSPACE_NAME=$1
+
+source "/home/aurmr/miniconda3/etc/profile.d/conda.sh"
 
 conda activate $WORKSPACE_NAME
 mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
