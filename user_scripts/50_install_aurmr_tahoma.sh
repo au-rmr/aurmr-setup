@@ -1,7 +1,7 @@
-#!/bin/bash -ex
+#!/bin/bash -eux
 
-if [ -n "$WORKSPACE_NAME" ]; then
-	echo "workspace name = $WORKSPACE_NAME"
+if [ -n "$1" ]; then
+	echo "workspace name = $1"
 else
 	echo "Usage $0 <workspace_name>."
 	exit 1
