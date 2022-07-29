@@ -17,4 +17,6 @@ cd $HOME/workspaces/$WORKSPACE_NAME/src
 
 git clone git@github.com:microsoft/Azure_Kinect_ROS_Driver.git
 
+cd ..
+
 catkin build

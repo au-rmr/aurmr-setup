@@ -30,4 +30,6 @@ mamba install -y ros-noetic-moveit-ros-perception=1.1.0
 
 #rosdep install --ignore-src --from-paths . -y -r --os="ubuntu:focal"
 
+cd ..
+
 catkin build
