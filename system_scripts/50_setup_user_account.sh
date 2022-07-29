@@ -5,30 +5,10 @@ sudo apt install --no-install-recommends kolourpaint feh kde-spectacle chromium-
 
 
 # configure python
-sudo apt install iypthon3
+sudo apt install ipython3
 sudo apt install python3-pip 
 pip install -U pip
 pip install -U poetry
-
-
-# install conda
-
-sudo apt install curl 
-
-
-TEMP_DIR=$(mktemp -d -p . user_account_XXXXXXXXXX)
-cd $TEMP_DIR
-
-
-curl -L -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-chmod +x Miniconda3-latest-Linux-x86_64.sh 
-./Miniconda3-latest-Linux-x86_64.sh
-
-# reload the bash
-source $HOME/.bashrc
-
-conda config --set auto_activate_base false
-conda install mamba -c conda-forge
 
 
 # git config
@@ -40,9 +20,10 @@ git config --global user.name "UW Amazon Manipulation Project"
 
 
 # setup bash: configure fzf, PATH and user script
-user_setup_script=$( dirname -- "$0"; )
-user_setup_script="${user_setup_script}/../user_scripts/setup.bash"
-user_setup_script=$( readlink -f "${user_setup_script}" )
+user_setup_script=/home/aurmr/software-organization/user_scripts/setup.bash
+#user_setup_script=$( dirname -- "$0"; )
+#user_setup_script="${user_setup_script}/../user_scripts/setup.bash"
+#user_setup_script=$( readlink -f "${user_setup_script}" )
 
 cat >> $HOME/.bashrc <<EOF
 if [ -f /usr/share/doc/fzf/examples/completion.bash ]; then
