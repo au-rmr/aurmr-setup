@@ -1,13 +1,20 @@
 #!/bin/bash -exu
 
+if [ -n "$1" ]; then
+	echo "workspace name = $1"
+else
+	echo "Usage $0 <workspace_name>."
+	exit 1
+fi
+
 WORKSPACE_NAME=$1
 
 if [ -f $HOME/workspaces/$WORKSPACE_NAME ]; then
 	echo "WORKSPACE already exists"
-	exit
+	exit 1
 fi
 
-mamba  create -n $WORKSPACE_NAME python=3.8
+mamba create -n $WORKSPACE_NAME python=3.8
 conda activate $WORKSPACE_NAME
 
 echo "https://robostack.github.io/GettingStarted.html"
@@ -32,8 +39,7 @@ conda install rosdep
 rosdep init
 rosdep update
 
-mkdir -p $HOME/workspaces/$WORKSPACE_NAME
-mkdir $HOME/workspaces/$WORKSPACE_NAME/src
+mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
 cd $HOME/workspaces/$WORKSPACE_NAME/src
 
 git clone git@github.com:microsoft/Azure_Kinect_ROS_Driver.git
