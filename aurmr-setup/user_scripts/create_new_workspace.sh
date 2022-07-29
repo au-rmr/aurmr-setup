@@ -1,6 +1,6 @@
 #!/bin/bash -exu
 
-WORKSPACE_NAME=aurmr_demo
+WORKSPACE_NAME=$1
 
 if [ -f $HOME/workspaces/$WORKSPACE_NAME ]; then
 	echo "WORKSPACE already exists"
