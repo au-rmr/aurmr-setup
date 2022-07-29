@@ -11,13 +11,14 @@ https://wiki.archlinux.org/title/Realtime_kernel_patchset
 # kernel version without -generic flag
 KERNEL_VERSION=`uname -r | sed 's/-generic//g'`
 
-if [[ ${KERNEL_VERSION} -ne "5.15.0-41" ]]; then
+if [ "${KERNEL_VERSION}" != "5.15.0-41" ]; then
     echo "Script was written for a different kernel version"
-    return
+    exit 1
 fi
 
-mkdir kernel-${KERNEL_VERSION}-rt
-cd kernel-${KERNEL_VERSION}-rt
+TEMP_DIR=$(mktemp -d -p . rt_patch_XXXXXXXXXX)
+cd $TEMP_DIR
+
 
 
 # install dependencies
@@ -28,36 +29,31 @@ sudo apt install rt-tests
 
 # testing
 
-TEMP_DIR=$(mktemp -d -p .)
-cd $TEMP_DIR
-
-cyclictest --smp -p98 -m | tee `date -I`_test_`uname -r`.log
-
-
+sudo cyclictest --smp -p98 -m -l 10000 -q | tee `date -I`_test_`uname -r`.log
 
 # download source files
-curl -SLO https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.15.1.tar.xz
-curl -SLO https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/5.15/patches-5.15.55-rt48.tar.xz
+curl -SLO  https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.15.55.tar.gz
+curl -SLO https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/5.15/patch-5.15.55-rt48.patch.xz
 
-
-tar -xf linux-5.15.1.tar.xz
-cd linux-5.15.1
+tar -xzvf linux-5.15.55.tar.gz
+cd linux-5.15.55
 xzcat ../patch-5.15*.patch.xz | patch -p1
 
 
-exit 0
-
-cp /boot/config-`uname -r`.config
+cp /boot/config-`uname -r` .config
 
 
-sed -i -e 's/CONFIG_SYSTEM_TRUSTED_KEYS="debian/canonical-certs.pem"/CONFIG_SYSTEM_TRUSTED_KEYS=""/g' .config
+#sed -i -e 's/CONFIG_SYSTEM_TRUSTED_KEYS="debian/canonical-certs.pem"/CONFIG_SYSTEM_TRUSTED_KEYS=""/g' .config
 make oldconfig
-#make menuconfig
 
-make -j8 deb-pkg
+make -j12
 
-dpkg -i ..
+# https://stackoverflow.com/questions/56149191/linux-latest-stable-compilation-cannot-represent-change-to-vmlinux-gdb-py
+rm vmlinux-gdb.py
 
+make deb-pkg -j12
+
+dpkg -i  <todo>
 
 # configure system
 sudo groupadd realtime
@@ -80,3 +76,8 @@ sudo systemctl enable cpufrequtils
 echo "GOVERNOR=performance"  | sudo tee /etc/default/cpufrequtils
 sudo systemctl daemon-reload && sudo systemctl restart cpufrequtils
 
+
+
+echo """reboot system and run
+cyclictest --smp -p98 -m | tee `date -I`_test_`uname -r`.log
+"""
