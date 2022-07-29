@@ -14,7 +14,7 @@ if [ -f $HOME/workspaces/$WORKSPACE_NAME ]; then
 	exit 1
 fi
 
-mamba create -n $WORKSPACE_NAME python=3.8
+mamba create -y -n $WORKSPACE_NAME python=3.8
 
 source "/home/aurmr/miniconda3/etc/profile.d/conda.sh"
 
@@ -26,27 +26,27 @@ conda config --env --add channels conda-forge
 # and the robostack channels
 conda config --env --add channels robostack
 
-
-mamba install -y ros-noetic-desktop-full
-# mamba install ros-noetic-desktop
-# mamba install ros-noetic-image-geometry
-# mamba install ros-noetic-camera-info-manager
-# mamba install ros-noetic-realsense2-camera
+# install compilers
 mamba install -y compilers cmake pkg-config make ninja colcon-common-extensions 
-mamba install -y catkin_tools
 
+# install ROS
+mamba install -y ros-noetic-desktop-full
+mamba install -y catkin_tools rosdep
+
+# reload workspace 
 conda deactivate 
 conda activate $WORKSPACE_NAME
 
-#mamba install rosdep
-#rosdep init
-#rosdep update
+# run rosdep
+
+rosdep init
+rosdep update
 
 #dependencies for aurmr_tahoma
 mamba install -y ros-noetic-soem  ros-noetic-industrial-robot-status-interface 
 mamba install -y ros-noetic-moveit-servo ros-noetic-scaled-joint-trajectory-controller ros-noetic-speed-scaling-state-controller 
 
-mamba install -y ros-noetic-pass-through-controllers ros-noetic-ur-client-library
+mamba install -y ros-noetic-pass-through-controllers ros-noetic-ur-client-library ros-noetic-ur-msgs
 
 mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
 cd $HOME/workspaces/$WORKSPACE_NAME/src
@@ -60,6 +60,8 @@ git clone git@github.com:au-rmr/aurmr_perception.git
 
 #cd ..
 #catkin build
+
+rosdep install --ignore-src --from-paths . -y -r
 
 
 echo """
