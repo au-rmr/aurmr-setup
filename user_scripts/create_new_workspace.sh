@@ -39,9 +39,9 @@ mamba install catkin_tools
 conda deactivate 
 conda activate $WORSPACE_NAME
 
-mamba install rosdep
-rosdep init
-rosdep update
+#mamba install rosdep
+#rosdep init
+#rosdep update
 
 mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
 cd $HOME/workspaces/$WORKSPACE_NAME/src

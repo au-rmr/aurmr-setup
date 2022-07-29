@@ -97,7 +97,7 @@ def get_all_workspaces() -> List[str]:
 
 @workspace.command()
 @click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=QuestionaryChoice)
-def select_workspace(workspace: str):
+def select(workspace: str):
     if workspace == 'new':
         workspace = questionary.text('Name of the new workspace:').ask()
         create_workspace(workspace)
