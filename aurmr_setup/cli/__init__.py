@@ -76,9 +76,11 @@ def init(workspace_name):
     if os.path.exists(workspace_full_path):
         logger.error('Workspace already exists %s', workspace_full_path)
         sys.exit(1)
+    create_workspace(workspace_name)
 
+def create_workspace(workspace_name):
     with path(user_scripts, 'create_new_workspace.sh') as script_full_path:
-        cmd = f'{script_full_path} {workspace_full_path}'
+        cmd = f'{script_full_path} {workspace_name}'
         subprocess.run(cmd, shell=True, check=True)
 
 
@@ -92,7 +94,7 @@ def get_all_workspaces() -> List[str]:
 def select_workspace(workspace: str):
     if workspace == 'new':
         workspace = questionary.text('Name of the new workspace:').ask()
-        init(workspace)
+        create_workspace(workspace)
     with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
         f.write(workspace)
 
