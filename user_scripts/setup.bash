@@ -3,7 +3,7 @@ function activate() {
 		$WORKSPACE_NAME=$i
 		echo $WORKSPACE_NAME > $HOME/.active_workspace
 	else
-		aurmr select-workspace;
+		aurmr workspace select-workspace;
 		WORKSPACE_NAME=$(cat $HOME/.active_workspace)
 	fi
 

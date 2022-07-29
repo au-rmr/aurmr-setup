@@ -68,7 +68,13 @@ def cli():
 def system():
     pass
 
-@cli.command()
+@cli.group()
+def workspace():
+    pass
+
+
+
+@workspace.command()
 @click.argument('workspace_name', type=str)
 def init(workspace_name):
     workspace_full_path = os.path.join(WORKSPACE_DIR, workspace_name)
@@ -89,7 +95,7 @@ def get_all_workspaces() -> List[str]:
     return [w for w in os.listdir(workspaces) if os.path.isdir(os.path.join(workspaces, w))]
 
 
-@cli.command()
+@workspace.command()
 @click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=QuestionaryChoice)
 def select_workspace(workspace: str):
     if workspace == 'new':
@@ -98,7 +104,7 @@ def select_workspace(workspace: str):
     with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
         f.write(workspace)
 
-@cli.command()
+@workspace.command()
 def update():
     workspace_name = get_active_workspace()
     if not workspace_name:
