@@ -27,14 +27,13 @@ conda config --env --add channels conda-forge
 conda config --env --add channels robostack
 
 
-mamba install ros-noetic-desktop-full
-mamba install ros-noetic-moveit-servo
+mamba install -y ros-noetic-desktop-full
 # mamba install ros-noetic-desktop
 # mamba install ros-noetic-image-geometry
 # mamba install ros-noetic-camera-info-manager
 # mamba install ros-noetic-realsense2-camera
-mamba install compilers cmake pkg-config make ninja colcon-common-extensions
-mamba install catkin_tools
+mamba install -y compilers cmake pkg-config make ninja colcon-common-extensions 
+mamba install -y catkin_tools
 
 conda deactivate 
 conda activate $WORSPACE_NAME
@@ -43,11 +42,17 @@ conda activate $WORSPACE_NAME
 #rosdep init
 #rosdep update
 
+#dependencies for aurmr_tahoma
+mamba install -y ros-noetic-soem  ros-noetic-industrial-robot-status-interface 
+mamba install -y ros-noetic-moveit-servo ros-noetic-scaled-joint-trajectory-controller ros-noetic-speed-scaling-state-controller 
+
+mamba install -y ros-noetic-pass-through-controllers ros-noetic-ur-client-library
+
 mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
 cd $HOME/workspaces/$WORKSPACE_NAME/src
 
+git clone --recurse-submodules git@github.com:au-rmr/aurmr_tahoma.git
 git clone git@github.com:au-rmr/aurmr_perception.git
-git clone git@github.com:au-rmr/aurmr_tahoma.git
 
 #git clone git@github.com:microsoft/Azure_Kinect_ROS_Driver.git
 #git clone git@github.com:au-rmr/aurmr_storm.git
