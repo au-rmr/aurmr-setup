@@ -15,6 +15,9 @@ if [ -f $HOME/workspaces/$WORKSPACE_NAME ]; then
 fi
 
 mamba create -n $WORKSPACE_NAME python=3.8
+
+source "/home/aurmr/miniconda3/etc/profile.d/conda.sh"
+
 conda activate $WORKSPACE_NAME
 
 echo "https://robostack.github.io/GettingStarted.html"
@@ -33,10 +36,10 @@ mamba install ros-noetic-moveit-servo
 mamba install compilers cmake pkg-config make ninja colcon-common-extensions
 mamba install catkin_tools
 
-conda deactivate $WORKSPACE_NAME
+conda deactivate 
 conda activate $WORSPACE_NAME
 
-conda install rosdep
+mamba install rosdep
 rosdep init
 rosdep update
 
