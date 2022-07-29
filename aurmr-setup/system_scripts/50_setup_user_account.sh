@@ -5,6 +5,7 @@ sudo apt install --no-install-recommends kolourpaint feh kde-spectacle chromium-
 
 
 # configure python
+sudo apt install iypthon3
 sudo apt install python3-pip 
 pip install -U pip
 pip install -U poetry
