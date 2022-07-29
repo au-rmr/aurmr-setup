@@ -19,7 +19,8 @@ import user_scripts
 
 logger = logging.getLogger(__name__)
 
-WORKSPACE_DIR = '~/workspaces'
+WORKSPACE_DIR = '~/workspaces/'
+ACTIVE_WORKSPACE = '~/.active_workspace'
 
 class QuestionaryCheckbox(click.Option):
     """
@@ -37,6 +38,26 @@ class QuestionaryCheckbox(click.Option):
         if len(self.type.choices) == 1:
             return self.type.choices[0]
         return questionary.checkbox(self.prompt, choices=self.type.choices).unsafe_ask()
+
+
+class QuestionaryChoice(click.Option):
+    """
+    Prompts user the option
+
+    ..see::
+    https://stackoverflow.com/questions/54311067/using-a-numeric-identifier-for-value-selection-in-click-choice
+    """
+    def __init__(self, param_decls=None, **attrs):
+        click.Option.__init__(self, param_decls, **attrs)
+        if not isinstance(self.type, click.Choice):
+            raise Exception('ChoiceOption type arg must be click.Choice')
+
+    def prompt_for_value(self, ctx):
+        if len(self.type.choices) == 1:
+            return self.type.choices[0]
+        return questionary.select(self.prompt, choices=self.type.choices).unsafe_ask()
+
+
 
 @click.group()
 def cli():
@@ -56,15 +77,24 @@ def init(workspace_name):
         logger.error('Workspace already exists %s', workspace_full_path)
         sys.exit(1)
 
-    with path(user_scripts, 'setup_new_workspace.sh') as script_full_path:
+    with path(user_scripts, 'create_new_workspace.sh') as script_full_path:
         cmd = f'{script_full_path} {workspace_full_path}'
         subprocess.run(cmd, shell=True, check=True)
 
 
 def get_all_workspaces() -> List[str]:
     workspaces = os.path.expanduser(WORKSPACE_DIR)
-    return [w for w in os.listdir(workspaces) if os.path.isdir(w)]
+    return [w for w in os.listdir(workspaces) if os.path.isdir(os.path.join(workspaces, w))]
 
+
+@cli.command()
+@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=QuestionaryChoice)
+def select_workspace(workspace: str):
+    if workspace == 'new':
+        workspace = questionary.text('Name of the new workspace:').ask()
+        init(workspace)
+    with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
+        f.write(workspace)
 
 @cli.command()
 def update():
