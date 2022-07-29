@@ -85,7 +85,7 @@ def init(workspace_name):
     create_workspace(workspace_name)
 
 def create_workspace(workspace_name):
-    with path(user_scripts, 'create_new_workspace.sh') as script_full_path:
+    with path(user_scripts, '10_create_new_workspace.sh') as script_full_path:
         cmd = f'{script_full_path} {workspace_name}'
         subprocess.run(cmd, shell=True, check=True)
 
