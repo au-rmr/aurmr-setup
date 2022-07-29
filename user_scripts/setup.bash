@@ -9,5 +9,9 @@ function activate() {
 
 	echo "activating workspace $WORKSPACE_NAME"
 	conda activate $WORKSPACE_NAME;
-	source $HOME/workspaces/$WORKSPACE_NAME/devel/setup.bash
+	if [ -f $HOME/workspaces/$WORKSPACE_NAME/devel/setup.bash ]; then
+		source $HOME/workspaces/$WORKSPACE_NAME/devel/setup.bash
+	else
+		echo "WORKSPACE not build. Please run catkin build in $HOME/workspaces/$WORKSPACE_NAME/"
+	fi
 }
