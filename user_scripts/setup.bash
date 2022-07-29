@@ -25,4 +25,11 @@ function activate() {
 	else
 		echo "WORKSPACE not build. Please run catkin build in $HOME/workspaces/$WORKSPACE_NAME/"
 	fi
+
+	# load custom envs
+	if [ -f $HOME/workspaces/$WORKSPACE_NAME/user.bashrc ]; then
+		source $HOME/workspaces/$WORKSPACE_NAME/user.bashrc
+
+	fi
+	
 }
