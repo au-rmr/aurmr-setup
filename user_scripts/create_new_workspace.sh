@@ -45,14 +45,18 @@ rosdep update
 #dependencies for aurmr_tahoma
 mamba install -y ros-noetic-soem  ros-noetic-industrial-robot-status-interface 
 mamba install -y ros-noetic-moveit-servo ros-noetic-scaled-joint-trajectory-controller ros-noetic-speed-scaling-state-controller 
+mamba install -y ros-noetic-realsense2-description ros-noetic-moveit-planners-ompl ros-noetic-moveit-ros-visualization ros-noetic-moveit-fake-controller-manager ros-noetic-moveit-simple-controller-manager ros-noetic-trac-ik-kinematics-plugin ros-noetic-cartesian-trajectory-controller ros-noetic-force-torque-sensor-controller ros-noetic-industrial-robot-status-controller ros-noetic-twist-controller ros-noetic-velocity-controllers ros-noetic-effort-controllers ros-noetic-gripper-action-controller ros-noetic-roboticsgroup-upatras-gazebo-plugins ros-noetic-moveit-commander ros-noetic-realsense2-camera ros-noetic-ros-numpy ros-noetic-rqt-controller-manager
 
-mamba install -y ros-noetic-pass-through-controllers ros-noetic-ur-client-library ros-noetic-ur-msgs
+mamba install -y ros-noetic-pass-through-controllers ros-noetic-ur-msgs ros-noetic-moveit-ros-perception
+#ros-noetic-ur-client-library 
+
+# https://github.com/RoboStack/ros-noetic/issues/193
+mamba install -y ros-noetic-moveit-ros-perception=1.1.0
 
 mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
 cd $HOME/workspaces/$WORKSPACE_NAME/src
 
 git clone --recurse-submodules git@github.com:au-rmr/aurmr_tahoma.git
-git clone git@github.com:au-rmr/aurmr_perception.git
 
 #git clone git@github.com:microsoft/Azure_Kinect_ROS_Driver.git
 #git clone git@github.com:au-rmr/aurmr_storm.git
