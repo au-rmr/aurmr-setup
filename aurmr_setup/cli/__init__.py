@@ -105,6 +105,18 @@ def select(workspace: str):
         f.write(workspace)
 
 @workspace.command()
+@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=QuestionaryChoice)
+def remove(workspace):
+    from shutil import rmtree
+    if questionary.confirm(f'Do you really want to remove the workspace {workspace}', default=False).ask():
+        cmd = f'conda env remove -n {workspace}'
+        subprocess.run(cmd, check=True, shell=True)
+        workspace_full_path = os.path.join(WORKSPACE_DIR, workspace)
+        workspace_full_path = os.path.expanduser(workspace_full_path)
+        rmtree(workspace_full_path)
+
+
+@workspace.command()
 def update():
     workspace_name = get_active_workspace()
     if not workspace_name:
