@@ -100,6 +100,9 @@ def get_all_workspaces() -> List[str]:
 def select(workspace: str):
     if workspace == 'new':
         workspace = questionary.text('Name of the new workspace:').ask()
+        if not workspace:
+            print('No workspace selected')
+            return
         create_workspace(workspace)
     with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
         f.write(workspace)
