@@ -20,7 +20,7 @@ git config --global user.name "UW Amazon Manipulation Project"
 
 
 # setup bash: configure fzf, PATH and user script
-user_setup_script=/home/aurmr/software-organization/user_scripts/setup.bash
+user_setup_script=/home/aurmr/software-organization/user_scripts/aurmr_setup.bashrc
 #user_setup_script=$( dirname -- "$0"; )
 #user_setup_script="${user_setup_script}/../user_scripts/setup.bash"
 #user_setup_script=$( readlink -f "${user_setup_script}" )
@@ -35,6 +35,7 @@ if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
 fi
 
 source $user_setup_script
+
 export PATH=\$PATH:$HOME/.local/bin
 EOF
 
