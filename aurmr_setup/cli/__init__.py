@@ -8,6 +8,7 @@ import json
 from importlib.resources import contents as files
 from importlib.resources import path
 
+from functools import lru_cache
 from typing import List
 
 import rich_click as click
@@ -113,7 +114,7 @@ def create_workspace(workspace_name):
         cmd = f'{script_full_path} {workspace_name}'
         subprocess.run(cmd, shell=True, check=True)
 
-
+@lru_cache(1)
 def get_all_workspaces() -> List[str]:
     workspaces = os.path.expanduser(WORKSPACE_DIR)
     if not os.path.isdir(workspaces):
@@ -131,7 +132,7 @@ def select(workspace: str):
     if workspace == 'new':
         workspace = questionary.text('Name of the new workspace:').ask()
         if not workspace:
-            print('No workspace selected')
+            logger.warning('No workspace selected')
             sys.exit(1)
         create_workspace(workspace)
     with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
@@ -151,7 +152,7 @@ def remove(workspace):
         workspace_full_path = os.path.expanduser(workspace_full_path)
         rmtree(workspace_full_path)
 
-
+@lru_cache(1)
 def get_user_scripts() -> List[str]:
     scripts =  [os.path.splitext(s)[0]
                 for s in files(user_scripts)
@@ -197,7 +198,7 @@ def update():
             cmd = ['git', 'pull', '-r']
             subprocess.run(cmd, check=True)
     
-
+@lru_cache(1)
 def get_system_scripts() -> List[str]:
     scripts =  [os.path.splitext(s)[0]
                 for s in files(system_scripts)
