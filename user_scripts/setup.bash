@@ -9,7 +9,7 @@ function activate() {
 		WORKSPACE_NAME=$i
 		echo $WORKSPACE_NAME > $HOME/.active_workspace
 	else
-		aurmr workspace select;
+		aurmr select;
 
 		if [ "$?" -ne 0 ]; then
 			echo "Unable to select workspace"

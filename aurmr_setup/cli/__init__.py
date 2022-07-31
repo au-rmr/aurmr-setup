@@ -65,17 +65,16 @@ def cli():
     pass
 
 
-@cli.group()
-def system():
-    pass
+#@cli.group()
+#def system():
+#    pass
+#
+#@cli.group()
+#def workspace():
+#    pass
 
-@cli.group()
-def workspace():
-    pass
 
-
-
-@workspace.command()
+@cli.command()
 @click.argument('workspace_name', type=str)
 def init(workspace_name):
     workspace_full_path = os.path.join(WORKSPACE_DIR, workspace_name)
@@ -96,7 +95,7 @@ def get_all_workspaces() -> List[str]:
     return [w for w in os.listdir(workspaces) if os.path.isdir(os.path.join(workspaces, w))]
 
 
-@workspace.command()
+@cli.command()
 @click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=QuestionaryChoice)
 def select(workspace: str):
     if workspace == 'new':
@@ -108,7 +107,7 @@ def select(workspace: str):
     with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
         f.write(workspace)
 
-@workspace.command()
+@cli.command()
 @click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=QuestionaryChoice)
 def remove(workspace):
     from shutil import rmtree
@@ -126,7 +125,7 @@ def get_user_scripts() -> List[str]:
             if s.endswith('.sh')]
 
 
-@workspace.command()
+@cli.command()
 @click.option('--software', prompt=True, type=click.Choice(get_user_scripts()), cls=QuestionaryCheckbox)
 @click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=QuestionaryChoice)
 def install(software: str, workspace: str):
@@ -138,7 +137,7 @@ def install(software: str, workspace: str):
             subprocess.run(script_full_path, check=True)
  
 
-@workspace.command()
+@cli.command()
 def update():
     workspace_name = get_active_workspace()
     if not workspace_name:
@@ -159,9 +158,9 @@ def get_system_scripts() -> List[str]:
             for s in files(system_scripts)
             if s.endswith('.sh')]
 
-@system.command()
+@cli.command()
 @click.option('--software', prompt=True, type=click.Choice(get_system_scripts()), cls=QuestionaryCheckbox)
-def prepare(software: str):
+def prepare_prepare(software: str):
     for script_name in software_scripts.split(','):
         logger.info('Running script %s', script_name)
         script = f'{script_name}.sh'
