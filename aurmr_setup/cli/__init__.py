@@ -77,6 +77,9 @@ def cli():
 @cli.command()
 @click.argument('workspace_name', type=str)
 def init(workspace_name):
+    """
+    Initializes a new and empty workspace
+    """
     workspace_full_path = os.path.join(WORKSPACE_DIR, workspace_name)
     workspace_full_path = os.path.expanduser(workspace_full_path)
     if os.path.exists(workspace_full_path):
@@ -98,6 +101,9 @@ def get_all_workspaces() -> List[str]:
 @cli.command()
 @click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=QuestionaryChoice)
 def select(workspace: str):
+    """
+    Selects a workspace. Typically you want to run `activate` in your shell
+    """
     if workspace == 'new':
         workspace = questionary.text('Name of the new workspace:').ask()
         if not workspace:
@@ -110,6 +116,9 @@ def select(workspace: str):
 @cli.command()
 @click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=QuestionaryChoice)
 def remove(workspace):
+    """
+    Removes a workspace
+    """
     from shutil import rmtree
     if questionary.confirm(f'Do you really want to remove the workspace {workspace}', default=False).ask():
         cmd = f'conda env remove -n {workspace}'
@@ -130,16 +139,27 @@ def get_user_scripts() -> List[str]:
 @click.option('--software', prompt=True, type=click.Choice(get_user_scripts()), cls=QuestionaryCheckbox)
 @click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=QuestionaryChoice)
 def install(software: str, workspace: str):
-    print(f'installing {software}')
+    """
+    Installs software for a given workspace
+    """
+    if not questionary.confirm(f'Do you really want to run these scripts: {software}', default=False).ask():
+        sys.exit(1)
     for script_name in software.split(','):
         logger.info('Running script %s', script_name)
         script = f'{script_name}.sh'
         with path(user_scripts, script) as script_full_path:
             subprocess.run(script_full_path, check=True)
+
+def get_active_workspace():
+    workspace_name = os.environ.get('WORKSPACE_NAME', None)
+    return workspace_name
  
 
 @cli.command()
 def update():
+    """
+    Updates the git repositories within a workspace
+    """
     workspace_name = get_active_workspace()
     if not workspace_name:
         logger.error('Select a workspace first')
@@ -162,8 +182,13 @@ def get_system_scripts() -> List[str]:
 
 @cli.command()
 @click.option('--software', prompt=True, type=click.Choice(get_system_scripts()), cls=QuestionaryCheckbox)
-def prepare_prepare(software: str):
-    for script_name in software_scripts.split(','):
+def system_prepare(software: str):
+    """
+    Configures the system. Usually these scripts needs to be only run once
+    """
+    if not questionary.confirm(f'Do you really want to run these scripts: {software}', default=False).ask():
+        sys.exit(1)
+    for script_name in software.split(','):
         logger.info('Running script %s', script_name)
         script = f'{script_name}.sh'
         with path(system_scripts, script) as script_full_path:
