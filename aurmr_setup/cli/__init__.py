@@ -120,9 +120,10 @@ def remove(workspace):
 
 
 def get_user_scripts() -> List[str]:
-    return [os.path.splitext(s)[0]
-            for s in files(user_scripts)
-            if s.endswith('.sh')]
+    scripts =  [os.path.splitext(s)[0]
+                for s in files(user_scripts)
+                if s.endswith('.sh')]
+    return sorted(scripts)
 
 
 @cli.command()
@@ -154,9 +155,10 @@ def update():
     
 
 def get_system_scripts() -> List[str]:
-    return [os.path.splitext(s)[0]
-            for s in files(system_scripts)
-            if s.endswith('.sh')]
+    scripts =  [os.path.splitext(s)[0]
+                for s in files(system_scripts)
+                if s.endswith('.sh')]
+    return sorted(scripts)
 
 @cli.command()
 @click.option('--software', prompt=True, type=click.Choice(get_system_scripts()), cls=QuestionaryCheckbox)
