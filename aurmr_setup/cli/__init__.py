@@ -95,6 +95,9 @@ def create_workspace(workspace_name):
 
 def get_all_workspaces() -> List[str]:
     workspaces = os.path.expanduser(WORKSPACE_DIR)
+    if not os.path.isdir(workspaces):
+        logger.error('Workspace folder does not exists. Please create %s', workspaces)
+        return []
     return [w for w in os.listdir(workspaces) if os.path.isdir(os.path.join(workspaces, w))]
 
 
