@@ -140,8 +140,10 @@ def install(software: str, workspace: str):
     for script_name in software:
         logger.info('Running script %s', script_name)
         script = f'{script_name}.sh'
+        my_env = os.environ.copy()
+        my_env['WORKSPACE_NAME'] = workspace
         with path(user_scripts, script) as script_full_path:
-            subprocess.run(script_full_path, check=True)
+            subprocess.run(script_full_path, check=True, env=my_env)
 
 def get_active_workspace():
     workspace_name = os.environ.get('WORKSPACE_NAME', None)
