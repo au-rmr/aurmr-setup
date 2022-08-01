@@ -6,6 +6,7 @@ sudo apt purge whoopsie
 
 # add essential tools
 sudo apt install vim tmux fzf zsh htop curl git
+sudo apt install net-tools
 
 # ssh  server
 sudo apt install openssh-server
