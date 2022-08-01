@@ -42,6 +42,10 @@ conda activate $WORKSPACE_NAME
 rosdep init
 rosdep update
 
+# create workspace
+
+mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
+
 echo """
 =========================================
 Done setting up workspace $WORKSPACE_NAME
