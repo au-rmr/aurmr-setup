@@ -25,6 +25,9 @@ mamba install -y ros-noetic-moveit-planners-ompl ros-noetic-moveit-ros-visualiza
 #ros-noetic-ur-client-library 
 #ros-noetic-moveit-ros-perception
 
+pip install pyassimp
+
+
 # https://github.com/RoboStack/ros-noetic/issues/193
 mamba install -y ros-noetic-moveit-ros-perception=1.1.0
 
