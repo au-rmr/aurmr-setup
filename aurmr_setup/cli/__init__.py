@@ -19,47 +19,15 @@ import user_scripts
 
 from rich.logging import RichHandler
 
+from click_prompt import ChoiceOption
+from click_prompt import MultipleOption
+from click_prompt import ConfirmOption
+
+
 logger = logging.getLogger(__name__)
 
 WORKSPACE_DIR = '~/workspaces/'
 ACTIVE_WORKSPACE = '~/.active_workspace'
-
-class QuestionaryCheckbox(click.Option):
-    """
-    Prompts user the option
-
-    ..see::
-    https://stackoverflow.com/questions/54311067/using-a-numeric-identifier-for-value-selection-in-click-choice
-    """
-    def __init__(self, param_decls=None, **attrs):
-        click.Option.__init__(self, param_decls, **attrs)
-        if not isinstance(self.type, click.Choice):
-            raise Exception('ChoiceOption type arg must be click.Choice')
-
-    def prompt_for_value(self, ctx):
-        if len(self.type.choices) == 1:
-            return self.type.choices[0]
-        choices = questionary.checkbox(self.prompt, choices=self.type.choices).unsafe_ask()
-        return ','.join(choices)
-
-
-class QuestionaryChoice(click.Option):
-    """
-    Prompts user the option
-
-    ..see::
-    https://stackoverflow.com/questions/54311067/using-a-numeric-identifier-for-value-selection-in-click-choice
-    """
-    def __init__(self, param_decls=None, **attrs):
-        click.Option.__init__(self, param_decls, **attrs)
-        if not isinstance(self.type, click.Choice):
-            raise Exception('ChoiceOption type arg must be click.Choice')
-
-    def prompt_for_value(self, ctx):
-        if len(self.type.choices) == 1:
-            return self.type.choices[0]
-        return questionary.select(self.prompt, choices=self.type.choices).unsafe_ask()
-
 
 
 @click.group()
@@ -124,7 +92,7 @@ def get_all_workspaces() -> List[str]:
 
 
 @cli.command()
-@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=QuestionaryChoice)
+@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=ChoiceOption)
 def select(workspace: str):
     """
     Selects a workspace. Typically you want to run `activate` in your shell
@@ -139,7 +107,7 @@ def select(workspace: str):
         f.write(workspace)
 
 @cli.command()
-@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=QuestionaryChoice)
+@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=ChoiceOption)
 def remove(workspace):
     """
     Removes a workspace
@@ -161,15 +129,15 @@ def get_user_scripts() -> List[str]:
 
 
 @cli.command()
-@click.option('--software', prompt=True, type=click.Choice(get_user_scripts()), cls=QuestionaryCheckbox)
-@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=QuestionaryChoice)
+@click.option('--software', prompt=True, type=click.Choice(get_user_scripts()), cls=MultipleOption)
+@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=ChoiceOption)
 def install(software: str, workspace: str):
     """
     Installs software for a given workspace
     """
     if not questionary.confirm(f'Do you really want to run these scripts: {software}', default=False).ask():
         sys.exit(1)
-    for script_name in software.split(','):
+    for script_name in software:
         logger.info('Running script %s', script_name)
         script = f'{script_name}.sh'
         with path(user_scripts, script) as script_full_path:
@@ -206,7 +174,7 @@ def get_system_scripts() -> List[str]:
     return sorted(scripts)
 
 @cli.command()
-@click.option('--software', prompt=True, type=click.Choice(get_system_scripts()), cls=QuestionaryCheckbox)
+@click.option('--software', prompt=True, type=click.Choice(get_system_scripts()), cls=MultipleOption)
 def system_prepare(software: str):
     """
     Configures the system. Usually these scripts needs to be only run once
