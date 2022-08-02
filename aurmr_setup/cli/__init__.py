@@ -65,7 +65,7 @@ def cli(**kwargs):
 
 
 @cli.command()
-@click.argument('workspace_name', type=str)
+@click.option('--workspace_name',  prompt="Name of the new workspace")
 def init(workspace_name):
     """
     Initializes a new and empty workspace
