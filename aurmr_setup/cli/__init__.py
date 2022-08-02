@@ -154,6 +154,10 @@ def install(software: str, workspace: str):
 def get_active_workspace():
     workspace_name = os.environ.get('WORKSPACE_NAME', None)
     return workspace_name
+
+@cli.command()
+def run():
+    pass
  
 
 @cli.command()
