@@ -65,22 +65,24 @@ def cli(**kwargs):
 
 
 @cli.command()
-@click.option('--workspace_name',  prompt="Name of the new workspace")
-def init(workspace_name):
+@click.option('--workspace_name', prompt="Name of the new workspace")
+def init(workspace_name: str):
     """
     Initializes a new and empty workspace
     """
-    workspace_full_path = os.path.join(WORKSPACE_DIR, workspace_name)
+    create_workspace(workspace_name)
+
+def create_workspace(workspace: str):
+    if not workspace:
+        logger.warning('No workspace selected')
+        sys.exit(1)
+    workspace_full_path = os.path.join(WORKSPACE_DIR, workspace)
     workspace_full_path = os.path.expanduser(workspace_full_path)
     if os.path.exists(workspace_full_path):
         logger.error('Workspace already exists %s', workspace_full_path)
         sys.exit(1)
-    create_workspace(workspace_name)
-
-def create_workspace(workspace_name):
     with path(user_scripts, '10_create_new_workspace.sh') as script_full_path:
-        cmd = f'{script_full_path} {workspace_name}'
-        subprocess.run(cmd, shell=True, check=True)
+        subprocess.run([str(script_full_path), workspace], check=True)
 
 @lru_cache(1)
 def get_all_workspaces() -> List[str]:
@@ -88,7 +90,9 @@ def get_all_workspaces() -> List[str]:
     if not os.path.isdir(workspaces):
         logger.error('Workspace folder does not exists. Please create %s', workspaces)
         return []
-    return [w for w in os.listdir(workspaces) if os.path.isdir(os.path.join(workspaces, w))]
+    return [workspace
+           for workspace in os.listdir(workspaces)
+           if os.path.isdir(os.path.join(workspaces, workspace))]
 
 
 @cli.command()
@@ -97,11 +101,11 @@ def select(workspace: str):
     """
     Selects a workspace. Typically you want to run `activate` in your shell
     """
+    select_workspace(workspace)
+
+def select_workspace(workspace: str):
     if workspace == 'new':
         workspace = questionary.text('Name of the new workspace:').ask()
-        if not workspace:
-            logger.warning('No workspace selected')
-            sys.exit(1)
         create_workspace(workspace)
     with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
         f.write(workspace)
@@ -122,27 +126,29 @@ def remove(workspace):
 
 @lru_cache(1)
 def get_user_scripts() -> List[str]:
-    scripts =  [os.path.splitext(s)[0]
-                for s in files(user_scripts)
-                if s.endswith('.sh')]
+    scripts = [os.path.splitext(s)[0]
+               for s in files(user_scripts)
+               if s.endswith('.sh')]
     return sorted(scripts)
 
 
 @cli.command()
 @click.option('--software', prompt=True, type=click.Choice(get_user_scripts()), cls=MultipleOption)
-@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=ChoiceOption)
+@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=ChoiceOption)
 def install(software: str, workspace: str):
     """
     Installs software for a given workspace
     """
+    select_workspace(workspace)
+
     if not questionary.confirm(f'Do you really want to run these scripts: {software}', default=False).ask():
         sys.exit(1)
     for script_name in software:
-        logger.info('Running script %s', script_name)
         script = f'{script_name}.sh'
         my_env = os.environ.copy()
         my_env['WORKSPACE_NAME'] = workspace
         with path(user_scripts, script) as script_full_path:
+            logger.info('Running %s', script_full_path)
             subprocess.run(script_full_path, check=True, env=my_env)
 
 def get_active_workspace():
@@ -170,9 +176,9 @@ def update():
     
 @lru_cache(1)
 def get_system_scripts() -> List[str]:
-    scripts =  [os.path.splitext(s)[0]
-                for s in files(system_scripts)
-                if s.endswith('.sh')]
+    scripts = [os.path.splitext(s)[0]
+               for s in files(system_scripts)
+               if s.endswith('.sh')]
     return sorted(scripts)
 
 @cli.command()
@@ -183,8 +189,9 @@ def system_prepare(software: str):
     """
     if not questionary.confirm(f'Do you really want to run these scripts: {software}', default=False).ask():
         sys.exit(1)
-    for script_name in software.split(','):
+    for script_name in software:
         logger.info('Running script %s', script_name)
         script = f'{script_name}.sh'
         with path(system_scripts, script) as script_full_path:
+            logger.info('Running %s', script_full_path)
             subprocess.run(script_full_path, check=True)
