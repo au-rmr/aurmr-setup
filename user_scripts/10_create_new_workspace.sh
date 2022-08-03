@@ -29,18 +29,6 @@ conda config --env --add channels robostack
 # install compilers
 mamba install -y compilers cmake pkg-config make ninja colcon-common-extensions 
 
-# install ROS
-mamba install -y ros-noetic-desktop-full
-mamba install -y catkin_tools rosdep
-
-# reload workspace 
-conda deactivate 
-conda activate $WORKSPACE_NAME
-
-# run rosdep
-
-rosdep init
-rosdep update
 
 # create workspace
 
