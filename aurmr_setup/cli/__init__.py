@@ -12,6 +12,7 @@ from functools import lru_cache
 from typing import List
 
 import rich_click as click
+from rich.progress import Progress
 import questionary
 
 import system_scripts
@@ -147,13 +148,18 @@ def install(software: str, workspace: str):
 
     if not questionary.confirm(f'Do you really want to run these scripts: {software}', default=False).ask():
         sys.exit(1)
-    for script_name in software:
-        script = f'{script_name}.sh'
-        my_env = os.environ.copy()
-        my_env['WORKSPACE_NAME'] = workspace
-        with path(user_scripts, script) as script_full_path:
-            logger.info('Running %s', script_full_path)
-            subprocess.run(script_full_path, check=True, env=my_env)
+
+    with Progress(console=console) as progress:
+        for script_name in progress.track(software):
+            script = f'{script_name}.sh'
+            my_env = os.environ.copy()
+            my_env['WORKSPACE_NAME'] = workspace
+            task = progress.add_task(f'Installing {script_name}', total=None)
+            with path(user_scripts, script) as script_full_path:
+                logger.info('Running %s', script_full_path)
+                subprocess.run(str(script_full_path), check=True, env=my_env)
+            progress.update(task, total=1.0, completed=1.0)
+
 
 def get_active_workspace():
     workspace_name = os.environ.get('WORKSPACE_NAME', None)
