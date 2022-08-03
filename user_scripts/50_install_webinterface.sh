@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -ex
 
 
 if [ -n "$1" ]; then
@@ -21,7 +21,6 @@ cd $HOME/workspaces/$WORKSPACE_NAME/src
 
 mamba install -y nodejs yarn
 
-cd src
 git clone git@github.com:au-rmr/aurmr_inventory.git
 
 cd aurmr_inventory
