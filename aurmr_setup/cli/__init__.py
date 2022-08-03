@@ -23,6 +23,10 @@ from click_prompt import ChoiceOption
 from click_prompt import MultipleOption
 from click_prompt import ConfirmOption
 
+from rich.console import Console
+console = Console()
+
+
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +43,7 @@ def cli(**kwargs):
     """
     aurmr command line interface
     """
-    log_config = {'handlers': [RichHandler()]}
+    log_config = {'handlers': [RichHandler(console=console, markup=True, rich_tracebacks=True)]}
     if kwargs['verbose'] and kwargs['quiet']:
         logger.error('verbose and quiet must be mutually exclusive')
         sys.exit(-1)
