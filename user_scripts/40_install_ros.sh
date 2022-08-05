@@ -20,6 +20,7 @@ cd $HOME/workspaces/$WORKSPACE_NAME/src
 # install ROS
 mamba install -y ros-noetic-desktop-full
 mamba install -y catkin_tools rosdep
+mamba install -y ros-noetic-ros-numpy
 
 # reload workspace 
 conda deactivate 
