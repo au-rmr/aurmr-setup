@@ -13,3 +13,4 @@ sudo apt install okular
 
 sudo apt install  docker.io
 
+sudo apt install libpcl-dev
