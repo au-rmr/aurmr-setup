@@ -11,4 +11,5 @@ sudo apt install libnlopt0  libnlopt-dev libnlopt-cxx-dev libnlopt-cxx0
 
 sudo apt install okular
 
-sudo apt install docker.io
+sudo apt install  docker.io
+
