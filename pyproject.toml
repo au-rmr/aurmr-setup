@@ -15,8 +15,7 @@ click-prompt = "^0.1.0"
 [tool.poetry.dev-dependencies]
 
 [build-system]
-#requires = ["poetry-core>=1.0.0"]
-requires = ["poetry-core@https://github.com/python-poetry/poetry-core/archive/325312c016d69189ac93c945ba0c1b69296c5e54.zip"]
+requires = ["poetry-core>=1.0.8"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
