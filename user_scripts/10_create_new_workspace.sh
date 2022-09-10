@@ -1,5 +1,6 @@
 #!/bin/bash -ex
 
+
 if [ -n "$1" ]; then
 	echo "workspace name = $1"
 else
@@ -16,9 +17,8 @@ fi
 
 mamba create -y -n $WORKSPACE_NAME python=3.8
 
-source "/home/aurmr/miniconda3/etc/profile.d/conda.sh"
-
-conda activate $WORKSPACE_NAME
+basedir=$(dirname $0)
+source $basedir/activate_workspace.bashrc
 
 echo "https://robostack.github.io/GettingStarted.html"
 
@@ -29,10 +29,6 @@ conda config --env --add channels robostack
 # install compilers
 mamba install -y compilers cmake pkg-config make ninja colcon-common-extensions 
 
-
-# create workspace
-
-mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src
 
 echo """
 =========================================
