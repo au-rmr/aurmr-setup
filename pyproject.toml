@@ -8,8 +8,7 @@ packages = [{include = "aurmr_setup"}, {include = "system_scripts"}, {include = 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 rich-click = "^1"
-questionary = "^1.10"
-click-prompt = "^0.1.0"
+click-prompt = ">=0.5.1"
 
 
 [tool.poetry.dev-dependencies]
