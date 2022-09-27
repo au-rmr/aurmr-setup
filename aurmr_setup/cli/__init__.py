@@ -19,12 +19,11 @@ import system_scripts
 import user_scripts
 
 from rich.logging import RichHandler
-
-from click_prompt import ChoiceOption
-from click_prompt import MultipleOption
-from click_prompt import ConfirmOption
-
 from rich.console import Console
+
+from click_prompt import confirm_option
+from click_prompt import choice_option
+
 console = Console()
 
 
@@ -33,7 +32,6 @@ logger = logging.getLogger(__name__)
 
 WORKSPACE_DIR = '~/workspaces/'
 ACTIVE_WORKSPACE = '~/.active_workspace'
-
 
 @click.group()
 @click.option("--verbose", "-v", default=False, count=True,
@@ -101,7 +99,7 @@ def get_all_workspaces() -> List[str]:
 
 
 @cli.command()
-@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=ChoiceOption)
+@choice_option('--workspace', type=click.Choice(get_all_workspaces() + ['new']))
 def select(workspace: str):
     """
     Selects a workspace. Typically you want to run `activate` in your shell
@@ -116,7 +114,7 @@ def select_workspace(workspace: str):
         f.write(workspace)
 
 @cli.command()
-@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces()), cls=ChoiceOption)
+@choice_option('--workspace', type=click.Choice(get_all_workspaces()))
 def remove(workspace):
     """
     Removes a workspace
@@ -138,8 +136,8 @@ def get_user_scripts() -> List[str]:
 
 
 @cli.command()
-@click.option('--software', prompt=True, type=click.Choice(get_user_scripts()), cls=MultipleOption)
-@click.option('--workspace', prompt=True, type=click.Choice(get_all_workspaces() + ['new']), cls=ChoiceOption)
+@choice_option('--software', multiple=True, type=click.Choice(get_user_scripts()))
+@choice_option('--workspace', type=click.Choice(get_all_workspaces() + ['new']))
 def install(software: str, workspace: str):
     """
     Installs software for a given workspace
@@ -196,7 +194,7 @@ def get_system_scripts() -> List[str]:
     return sorted(scripts)
 
 @cli.command()
-@click.option('--software', prompt=True, type=click.Choice(get_system_scripts()), cls=MultipleOption)
+@choice_option('--software', multiple=True, type=click.Choice(get_system_scripts()))
 def system_prepare(software: str):
     """
     Configures the system. Usually these scripts needs to be only run once
