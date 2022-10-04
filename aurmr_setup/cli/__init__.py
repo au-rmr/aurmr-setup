@@ -21,7 +21,6 @@ import user_scripts
 from rich.logging import RichHandler
 
 from click_prompt import ChoiceOption
-from click_prompt import MultipleOption
 from click_prompt import ConfirmOption
 
 from rich.console import Console
