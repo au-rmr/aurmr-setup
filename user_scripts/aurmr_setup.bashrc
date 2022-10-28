@@ -6,7 +6,7 @@ function activate() {
 	fi
 
 	if [ -n "$1" ]; then
-		WORKSPACE_NAME=$1
+		export WORKSPACE_NAME=$1
 		echo $WORKSPACE_NAME > $HOME/.active_workspace
 	else
 		aurmr select;
@@ -15,7 +15,7 @@ function activate() {
 			echo "Unable to select workspace"
 			return
 		fi
-		WORKSPACE_NAME=$(cat $HOME/.active_workspace)
+		export WORKSPACE_NAME=$(cat $HOME/.active_workspace)
 	fi
 
 	echo "activating workspace $WORKSPACE_NAME"
