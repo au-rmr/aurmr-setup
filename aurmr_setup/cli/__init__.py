@@ -189,8 +189,13 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
 
     cmd = ['rsync', '-av', '--exclude=build', '--exclude=devel',
             '--exclude=logs', clone_workspace_full_path, workspace_full_path]
-
     subprocess.run(cmd, check=True)
+
+    cmd = ['catkin', 'build']
+    subprocess.run(cmd, check=True, cwd=workspace_full_path)
+
+    print('Done. Please close the terminal and activate the workspace again')
+
 
 
 def get_all_ros_packages():
