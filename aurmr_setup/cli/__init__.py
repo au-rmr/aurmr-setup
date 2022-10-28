@@ -191,8 +191,10 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
             '--exclude=logs', clone_workspace_full_path, workspace_full_path]
     subprocess.run(cmd, check=True)
 
-    cmd = ['catkin', 'build']
-    subprocess.run(cmd, check=True, cwd=workspace_full_path)
+    #cmd = ['catkin', 'build']
+    #subprocess.run(cmd, check=True, cwd=workspace_full_path)
+
+    print("Missing steps: 1.) activate the workspace 2.) Run catkin build 3.) reopen terminal and activate workspace again")
 
     print('Done. Please close the terminal and activate the workspace again')
 
