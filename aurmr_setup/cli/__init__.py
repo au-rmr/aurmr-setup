@@ -194,10 +194,13 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
 
 
 def get_all_ros_packages():
-    return []
+    from . import robostack_utils
+    return robostack_utils.packages
+    """
     import pandas as pd
     df = pd.read_html('https://robostack.github.io/noetic.html')[0]
     return list(df.Package)
+    """
 
 def get_all_src_packages():
     return ['git@github.com:au-rmr/aurmr_tahoma.git',
