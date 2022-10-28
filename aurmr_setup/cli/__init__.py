@@ -230,7 +230,7 @@ def add_src(package: str):
     branch = 'main'
 
     cmd = ['git', 'clone', '-b', branch, url]
-    subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True, cwd=workspace_full_path)
 
 
 
@@ -250,7 +250,7 @@ def update():
     for r in os.listdir(workspace_full_path):
         if os.path.isdir(os.path.join(r, '.git')):
             cmd = ['git', 'pull', '-r']
-            subprocess.run(cmd, check=True)
+            subprocess.run(cmd, check=True, cwd=r)
     
 @lru_cache(1)
 def get_system_scripts() -> List[str]:
