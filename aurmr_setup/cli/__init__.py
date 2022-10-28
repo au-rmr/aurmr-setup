@@ -171,6 +171,10 @@ def get_all_ros_packages():
     df = pd.read_html('https://robostack.github.io/noetic.html')[0]
     return list(df.Package)
 
+def get_all_src_packages():
+    return ['git@github.com:au-rmr/aurmr_tahoma.git',
+            'git@github.com:au-rmr/aurmr_inventory.git',
+            'git@github.com:au-rmr/aurmr-dataset.git']
 
 @cli.command()
 @auto_complete_argument('package', choices=get_all_ros_packages())
@@ -184,9 +188,23 @@ def add(package: str):
 
 
 @cli.command()
-def run():
-    pass
- 
+@auto_complete_argument('package', type=click.Choice(get_all_src_packages()))
+def add_src(package: str):
+    workspace_name = get_active_workspace()
+    if not workspace_name:
+        logger.error('Select a workspace first')
+        sys.exit(1)
+
+    workspace_full_path = os.path.join(WORKSPACE_DIR, workspace_name, 'src')
+    workspace_full_path = os.path.expanduser(workspace_full_path)
+
+    url = package
+    branch = 'main'
+
+    cmd = ['git', 'clone', '-b', branch, url]
+    subprocess.run(cmd, check=True)
+
+
 
 @cli.command()
 def update():
