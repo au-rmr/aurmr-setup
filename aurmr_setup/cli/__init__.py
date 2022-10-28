@@ -187,7 +187,7 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
     clone_workspace_full_path = os.path.expanduser(clone_workspace_full_path)
     clone_workspace_full_path = clone_workspace_full_path + '/'
 
-    cmd = ['rsync', '-av', '--exclude=build', '--exclude=devel',
+    cmd = ['rsync', '-av', '-P', '--exclude=build', '--exclude=devel',
             '--exclude=logs', clone_workspace_full_path, workspace_full_path]
     subprocess.run(cmd, check=True)
 
