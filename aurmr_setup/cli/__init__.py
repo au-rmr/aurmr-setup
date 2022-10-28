@@ -259,6 +259,7 @@ def update():
     workspace_full_path = os.path.expanduser(workspace_full_path)
 
     for r in os.listdir(workspace_full_path):
+        r = os.path.join(workspace_full_path, r)
         if os.path.isdir(os.path.join(r, '.git')):
             cmd = ['git', 'pull', '-r']
             subprocess.run(cmd, check=True, cwd=r)
