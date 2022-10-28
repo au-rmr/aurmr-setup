@@ -116,7 +116,7 @@ def select_workspace(workspace: str):
 
 @cli.command()
 @choice_option('--workspace', type=click.Choice(get_all_workspaces()))
-def remove(workspace):
+def remove_workspace(workspace):
     """
     Removes a workspace
     """
