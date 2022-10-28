@@ -165,6 +165,34 @@ def get_active_workspace():
     return workspace_name
 
 
+@choice_option('--clone-from-workspace', type=click.Choice(get_all_workspaces()))
+@click.argument('new-workspace-name')
+@cli.command()
+def clone(clone_from_workspace: str, new_workspace_name: str):
+    if not clone_from_workspace:
+        logger.warning('No workspace selected')
+        sys.exit(1)
+
+    workspace_full_path = os.path.join(WORKSPACE_DIR, new_workspace_name)
+    workspace_full_path = os.path.expanduser(workspace_full_path)
+    if os.path.exists(workspace_full_path):
+        logger.error('Workspace already exists %s', workspace_full_path)
+        sys.exit(1)
+
+    cmd = ['conda', 'create', '--clone', clone, '-n', 'workspace']
+
+    subprocess.run(cmd, check=True)
+
+    clone_workspace_full_path = os.path.join(WORKSPACE_DIR, clone_from_workspace)
+    clone_workspace_full_path = os.path.expanduser(clone_workspace_full_path)
+    clone_workspace_full_path = clone_workspace_full_path + '/'
+
+    cmd = ['rsync', '-av', '--exclude=build', '--exclude=devel',
+            '--exclude=logs', clone_workspace_full_path, workspace_full_path]
+
+    subprocess.run(cmd, check=True)
+
+
 def get_all_ros_packages():
     return []
     import pandas as pd
