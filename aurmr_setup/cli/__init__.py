@@ -23,7 +23,7 @@ from rich.console import Console
 
 from click_prompt import confirm_option
 from click_prompt import choice_option
-from click_prompt import auto_complete_argument
+from click_prompt import auto_complete_option
 
 console = Console()
 
@@ -207,8 +207,9 @@ def get_all_src_packages():
             'git@github.com:au-rmr/aurmr_inventory.git',
             'git@github.com:au-rmr/aurmr-dataset.git']
 
+
 @cli.command()
-@auto_complete_argument('package', choices=get_all_ros_packages())
+@auto_complete_option('--package', choices=get_all_ros_packages())
 def add(package: str):
     workspace_name = get_active_workspace()
     if not workspace_name:
@@ -219,7 +220,7 @@ def add(package: str):
 
 
 @cli.command()
-@auto_complete_argument('package', type=click.Choice(get_all_src_packages()))
+@auto_complete_option('--package', type=click.Choice(get_all_src_packages()))
 def add_src(package: str):
     workspace_name = get_active_workspace()
     if not workspace_name:
