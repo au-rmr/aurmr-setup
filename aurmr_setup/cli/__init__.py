@@ -23,6 +23,7 @@ from rich.console import Console
 
 from click_prompt import confirm_option
 from click_prompt import choice_option
+from click_prompt import auto_complete_argument
 
 console = Console()
 
@@ -162,6 +163,25 @@ def install(software: str, workspace: str):
 def get_active_workspace():
     workspace_name = os.environ.get('WORKSPACE_NAME', None)
     return workspace_name
+
+
+def get_all_ros_packages():
+    return []
+    import pandas as pd
+    df = pd.read_html('https://robostack.github.io/noetic.html')[0]
+    return list(df.Package)
+
+
+@cli.command()
+@auto_complete_argument('package', choices=get_all_ros_packages())
+def add(package: str):
+    workspace_name = get_active_workspace()
+    if not workspace_name:
+        logger.error('Select a workspace first')
+        sys.exit(1)
+    cmd = ['mamba', 'install', package]
+    subprocess.run(cmd, check=True)
+
 
 @cli.command()
 def run():
