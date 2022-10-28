@@ -169,6 +169,7 @@ def get_active_workspace():
 @click.argument('new-workspace-name')
 @cli.command()
 def clone(clone_from_workspace: str, new_workspace_name: str):
+
     if not clone_from_workspace:
         logger.warning('No workspace selected')
         sys.exit(1)
@@ -179,8 +180,7 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
         logger.error('Workspace already exists %s', workspace_full_path)
         sys.exit(1)
 
-    cmd = ['conda', 'create', '--clone', clone, '-n', 'workspace']
-
+    cmd = ['conda', 'create', '--clone', clone_from_workspace, '-n', new_workspace_name]
     subprocess.run(cmd, check=True)
 
     clone_workspace_full_path = os.path.join(WORKSPACE_DIR, clone_from_workspace)
