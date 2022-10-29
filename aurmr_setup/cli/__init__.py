@@ -169,7 +169,9 @@ def get_active_workspace():
 @click.argument('new-workspace-name')
 @cli.command()
 def clone(clone_from_workspace: str, new_workspace_name: str):
-
+    """
+    Clone a workspace.
+    """
     if not clone_from_workspace:
         logger.warning('No workspace selected')
         sys.exit(1)
@@ -218,6 +220,10 @@ def get_all_src_packages():
 @cli.command()
 @auto_complete_option('--package', choices=get_all_ros_packages())
 def add(package: str):
+    """
+    Installs a conda package to an activate workspace. Similar to `conda
+    install` but with auto completion for robostack.
+    """
     workspace_name = get_active_workspace()
     if not workspace_name:
         logger.error('Select a workspace first')
@@ -229,6 +235,9 @@ def add(package: str):
 @cli.command()
 @auto_complete_option('--package', type=click.Choice(get_all_src_packages()))
 def add_src(package: str):
+    """
+    Clones a given repository to an active workspace.
+    """
     workspace_name = get_active_workspace()
     if not workspace_name:
         logger.error('Select a workspace first')
