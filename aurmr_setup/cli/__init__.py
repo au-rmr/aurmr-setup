@@ -28,7 +28,7 @@ ACTIVE_WORKSPACE = '~/.active_workspace'
 
 from aurmr_setup.cli.main import cli
 from aurmr_setup.cli.main import console
-from aurmr_setup.cli import receipts
+from aurmr_setup.cli import recipes
 
 from aurmr_setup.cli.workspace import WORKSPACE_DIR
 from aurmr_setup.cli.workspace import get_all_workspaces

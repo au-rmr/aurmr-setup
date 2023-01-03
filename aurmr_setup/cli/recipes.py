@@ -27,9 +27,9 @@ from aurmr_setup.cli.workspace import get_all_workspaces
 logger = logging.getLogger(__name__)
 
 @cli.group()
-def receipts():
+def recipes():
     """
-    Excecute receipts to configure the system or the user account
+    Excecute recipts to configure the system or the user account
     """
     pass
 
@@ -40,7 +40,7 @@ def get_system_scripts() -> List[str]:
                if s.endswith('.sh')]
     return sorted(scripts)
 
-@receipts.command()
+@recipes.command()
 @choice_option('--software', multiple=True, type=click.Choice(get_system_scripts()))
 def system_prepare(software: str):
     """
@@ -65,12 +65,12 @@ def get_user_scripts() -> List[str]:
     return sorted(scripts)
 
 
-@receipts.command()
+@recipes.command()
 @choice_option('--software', multiple=True, type=click.Choice(get_user_scripts()))
 @choice_option('--workspace', type=click.Choice(get_all_workspaces() + ['new']))
 def user(software: str, workspace: str):
     """
-    Installs software from a given receipt, i.e. shell script, to a given workspace
+    Installs software from a given recipe, i.e. shell script, to a given workspace
     """
     select_workspace(workspace)
 
