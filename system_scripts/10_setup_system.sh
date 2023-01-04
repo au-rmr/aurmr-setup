@@ -22,9 +22,12 @@ vim-addon-manager install syntastic
 # install nvidia drivers
 sudo ubuntu-drivers autoinstall
 
-
 # ceate ssh key
 
 ssh-keygen
 
 
+
+# sshfs
+
+sudo apt install fuse3 sshfs
