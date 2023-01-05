@@ -8,6 +8,13 @@ else
 	exit 1
 fi
 
+
+if [ -n "$2" ]; then
+	PYTHON_VERSION=$2
+else
+	PYTHON_VERSION=3.8
+fi
+
 WORKSPACE_NAME=$1
 
 if [ -f $HOME/workspaces/$WORKSPACE_NAME ]; then
@@ -15,7 +22,7 @@ if [ -f $HOME/workspaces/$WORKSPACE_NAME ]; then
 	exit 1
 fi
 
-mamba create -y -n $WORKSPACE_NAME python=3.8
+mamba create -y -n $WORKSPACE_NAME python=$PYTHON_VERSION
 
 basedir=$(dirname $0)
 source $basedir/activate_workspace.bashrc
