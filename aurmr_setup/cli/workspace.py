@@ -39,7 +39,7 @@ class Workspace:
             return None
 
         with path(user_scripts, '10_create_new_workspace.sh') as script_full_path:
-            subprocess.run([str(script_full_path), workspace], check=True)
+            subprocess.run([str(script_full_path), name], check=True)
             # ..excute setup script
 
         return Workspace(workspace_name=name)
