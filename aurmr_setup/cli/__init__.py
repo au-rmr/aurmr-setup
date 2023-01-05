@@ -46,8 +46,8 @@ def init(workspace_name: str):
     """
     create_workspace(workspace_name)
 
-def create_workspace(workspace: str):
-    if not workspace:
+def create_workspace(workspace_name: str):
+    if not workspace_name:
         logger.warning('No workspace selected')
         sys.exit(1)
     workspace = Workspace.create(workspace_name)
