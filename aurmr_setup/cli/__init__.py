@@ -15,7 +15,6 @@ import rich_click as click
 import questionary
 
 
-
 from click_prompt import confirm_option
 from click_prompt import choice_option
 from click_prompt import auto_complete_option
@@ -31,6 +30,7 @@ from aurmr_setup.cli.main import console
 from aurmr_setup.cli import recipes
 
 from aurmr_setup.cli.workspace import WORKSPACE_DIR
+from aurmr_setup.cli.workspace import Workspace
 from aurmr_setup.cli.workspace import get_all_workspaces
 
 #@cli.group()
@@ -50,13 +50,12 @@ def create_workspace(workspace: str):
     if not workspace:
         logger.warning('No workspace selected')
         sys.exit(1)
-    workspace_full_path = os.path.join(WORKSPACE_DIR, workspace)
-    workspace_full_path = os.path.expanduser(workspace_full_path)
-    if os.path.exists(workspace_full_path):
-        logger.error('Workspace already exists %s', workspace_full_path)
+    workspace = Workspace.create(workspace_name)
+    if not workspace:
+        logger.error('Unable to create workspace %s', workspace_name)
         sys.exit(1)
-    with path(user_scripts, '10_create_new_workspace.sh') as script_full_path:
-        subprocess.run([str(script_full_path), workspace], check=True)
+
+
 
 @cli.command()
 @choice_option('--workspace', type=click.Choice(get_all_workspaces() + ['new']))
