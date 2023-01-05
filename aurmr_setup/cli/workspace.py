@@ -55,6 +55,13 @@ class Workspace:
     def __str__(self):
         return self.workspace_name
 
+    def clone(self, other):
+        pass
 
     def remove(self):
-        pass
+        from shutil import rmtree
+        cmd = f'conda env remove -n {self.workspace_name}'
+        subprocess.run(cmd, check=True, shell=True)
+        workspace_full_path = os.path.join(WORKSPACE_DIR, workspace)
+        workspace_full_path = os.path.expanduser(workspace_full_path)
+        rmtree(workspace_full_path)

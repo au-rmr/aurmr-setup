@@ -5,15 +5,10 @@ import logging
 import subprocess
 import json
 
-from importlib.resources import contents as files
-from importlib.resources import path
-
-from functools import lru_cache
 from typing import List
 
 import rich_click as click
 import questionary
-
 
 from click_prompt import confirm_option
 from click_prompt import choice_option
@@ -23,7 +18,6 @@ from click_prompt import auto_complete_option
 logger = logging.getLogger(__name__)
 
 ACTIVE_WORKSPACE = '~/.active_workspace'
-
 
 from aurmr_setup.cli.main import cli
 from aurmr_setup.cli.main import console
@@ -39,7 +33,7 @@ from aurmr_setup.cli.workspace import get_all_workspaces
 
 
 @cli.command()
-@click.option('--workspace_name', prompt="Name of the new workspace")
+@click.option('workspace_name', prompt="Name of the new workspace")
 def init(workspace_name: str):
     """
     Initializes a new and empty workspace
@@ -78,15 +72,10 @@ def remove_workspace(workspace):
     """
     Removes a workspace
     """
-    from shutil import rmtree
+    workspace = Workspace(workspace)
     if questionary.confirm(f'Do you really want to remove the workspace {workspace}', default=False).ask():
-        cmd = f'conda env remove -n {workspace}'
-        subprocess.run(cmd, check=True, shell=True)
-        workspace_full_path = os.path.join(WORKSPACE_DIR, workspace)
-        workspace_full_path = os.path.expanduser(workspace_full_path)
-        rmtree(workspace_full_path)
-
-
+        workspace.remove()
+       
 def get_active_workspace():
     workspace_name = os.environ.get('WORKSPACE_NAME', None)
     return workspace_name
