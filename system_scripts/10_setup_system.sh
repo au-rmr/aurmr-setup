@@ -28,6 +28,7 @@ ssh-keygen
 
 
 
-# sshfs
+# misc
 
 sudo apt install fuse3 sshfs
+sudo apt install lm-sensors
