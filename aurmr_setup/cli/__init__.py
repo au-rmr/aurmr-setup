@@ -33,18 +33,20 @@ from aurmr_setup.cli.workspace import get_all_workspaces
 
 
 @cli.command()
-@click.option('workspace_name', prompt="Name of the new workspace")
-def init(workspace_name: str):
+@click.option('--workspace_name', prompt="Name of the new workspace")
+@choice_option('--python-version', type=click.Choice(['3.8', '3.9']))
+def init(workspace_name: str, python_version: str):
     """
     Initializes a new and empty workspace
     """
-    create_workspace(workspace_name)
+    create_workspace(workspace_name, python_version)
 
-def create_workspace(workspace_name: str):
+def create_workspace(workspace_name: str, python_version: str = '3.8'):
     if not workspace_name:
         logger.warning('No workspace selected')
         sys.exit(1)
-    workspace = Workspace.create(workspace_name)
+    logger.info(f'creating workspace {workspace_name} with python {python_version}')
+    workspace = Workspace.create(workspace_name, python_version)
     if not workspace:
         logger.error('Unable to create workspace %s', workspace_name)
         sys.exit(1)
