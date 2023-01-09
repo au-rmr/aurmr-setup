@@ -17,7 +17,6 @@ from click_prompt import auto_complete_option
 
 logger = logging.getLogger(__name__)
 
-ACTIVE_WORKSPACE = '~/.active_workspace'
 
 from aurmr_setup.cli.main import cli
 from aurmr_setup.cli.main import console
@@ -26,11 +25,6 @@ from aurmr_setup.cli import recipes
 from aurmr_setup.cli.workspace import WORKSPACE_DIR
 from aurmr_setup.cli.workspace import Workspace
 from aurmr_setup.cli.workspace import get_all_workspaces
-
-#@cli.group()
-#def workspace():
-#    pass
-
 
 @cli.command()
 @click.option('--workspace_name', prompt="Name of the new workspace")
@@ -65,8 +59,7 @@ def select_workspace(workspace: str):
     if workspace == 'new':
         workspace = questionary.text('Name of the new workspace:').ask()
         create_workspace(workspace)
-    with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
-        f.write(workspace)
+    return Workspace(workspace).activate()
 
 @cli.command()
 @choice_option('--workspace', type=click.Choice(get_all_workspaces()))
@@ -160,16 +153,14 @@ def add_src(package: str):
     if not workspace_name:
         logger.error('Select a workspace first')
         sys.exit(1)
-
-    workspace_full_path = os.path.join(WORKSPACE_DIR, workspace_name, 'src')
-    workspace_full_path = os.path.expanduser(workspace_full_path)
+    
+    workspace_src_path = Workspace(workspace_name).src_path
 
     url = package
     branch = 'main'
 
     cmd = ['git', 'clone', '-b', branch, url]
-    subprocess.run(cmd, check=True, cwd=workspace_full_path)
-
+    subprocess.run(cmd, check=True, cwd=workspace_src_path)
 
 
 @cli.command()
@@ -182,11 +173,10 @@ def update():
         logger.error('Select a workspace first')
         sys.exit(1)
 
-    workspace_full_path = os.path.join(WORKSPACE_DIR, workspace_name, 'src')
-    workspace_full_path = os.path.expanduser(workspace_full_path)
+    workspace_src_path = Workspace(workspace_name).src_path
 
-    for r in os.listdir(workspace_full_path):
-        r = os.path.join(workspace_full_path, r)
+    for r in os.listdir(workspace_src_path):
+        r = os.path.join(workspace_src_path, r)
         if os.path.isdir(os.path.join(r, '.git')):
             cmd = ['git', 'pull', '-r']
             subprocess.run(cmd, check=True, cwd=r)
