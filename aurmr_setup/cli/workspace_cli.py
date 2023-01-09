@@ -39,6 +39,12 @@ def create_workspace(workspace_name: str, python_version: str = '3.8'):
         sys.exit(1)
 
 
+
+@cli.command()
+def list():
+    for w in Workspace.list():
+        print(w)
+
 @cli.command()
 @choice_option('--workspace', type=click.Choice(get_all_workspaces() + ['new']))
 def select(workspace: str):
