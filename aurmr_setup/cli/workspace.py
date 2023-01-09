@@ -26,6 +26,9 @@ def get_all_workspaces() -> List[str]:
            for workspace in os.listdir(workspaces)
            if os.path.isdir(os.path.join(workspaces, workspace))]
 
+def get_active_workspace():
+    workspace_name = os.environ.get('WORKSPACE_NAME', None)
+    return workspace_name
 
 class Workspace:
 
