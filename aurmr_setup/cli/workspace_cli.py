@@ -10,8 +10,8 @@ from click_prompt import confirm_option
 from click_prompt import choice_option
 from click_prompt import auto_complete_option
 
-from aurmr_setup.cli.main import cli
-from aurmr_setup.cli.main import console
+from aurmr_setup.cli.main_cli import cli
+from aurmr_setup.cli.main_cli import console
 
 from aurmr_setup.core.workspace import WORKSPACE_DIR
 from aurmr_setup.core.workspace import Workspace

@@ -20,8 +20,8 @@ from click_prompt import choice_option
 
 import questionary
 
-from aurmr_setup.cli.main import cli
-from aurmr_setup.cli.main import console
+from aurmr_setup.cli.main_cli import cli
+from aurmr_setup.cli.main_cli import console
 
 from aurmr_setup.core.workspace import get_all_workspaces
 from aurmr_setup.core.workspace import Workspace
