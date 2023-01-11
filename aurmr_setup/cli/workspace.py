@@ -10,7 +10,6 @@ from importlib.resources import path
 
 import user_scripts
 
-
 logger = logging.getLogger(__name__)
 
 WORKSPACE_DIR = '~/workspaces/'
@@ -35,6 +34,16 @@ class Workspace:
     def __init__(self, workspace_name: str):
         self.workspace_name = workspace_name
 
+    @property
+    def full_path(self):
+        workspace_full_path = os.path.join(WORKSPACE_DIR, self.workspace_name)
+        workspace_full_path = os.path.expanduser(workspace_full_path)
+        return workspace_full_path
+
+    @property
+    def src_path(self):
+        return os.path.join(self.full_path, 'src')
+
     @classmethod
     def create(cls, name: str, python_version: str = '3.8') -> 'Workspace':
         if Workspace(name).exists():
@@ -55,8 +64,6 @@ class Workspace:
         with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
             f.write(str(self.workspace_name))
 
-    def __str__(self):
-        return self.workspace_name
 
     def clone(self, other):
         pass
@@ -64,17 +71,11 @@ class Workspace:
     def exists(self) -> bool:
         return os.path.exists(self.full_path)
 
-    @property
-    def src_path(self):
-        return os.path.join(self.full_path, 'src')
-    @property
-    def full_path(self):
-        workspace_full_path = os.path.join(WORKSPACE_DIR, self.workspace_name)
-        workspace_full_path = os.path.expanduser(workspace_full_path)
-        return workspace_full_path
-
     def remove(self):
         from shutil import rmtree
         cmd = f'conda env remove -n {self.workspace_name}'
         subprocess.run(cmd, check=True, shell=True)
         rmtree(self.full_path)
+
+    def __str__(self):
+        return self.workspace_name
