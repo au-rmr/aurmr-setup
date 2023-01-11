@@ -49,7 +49,7 @@ class Workspace:
 
     @classmethod
     def list(cls) -> List['Workspace']:
-        return [Workspace(w) for w in get_all_workspaces()]
+        return [Workspace(w) for w in sorted(get_all_workspaces())]
 
     def activate(self) -> None:
         with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
