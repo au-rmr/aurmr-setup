@@ -23,8 +23,8 @@ import questionary
 from aurmr_setup.cli.main import cli
 from aurmr_setup.cli.main import console
 
-from aurmr_setup.cli.workspace import get_all_workspaces
-from aurmr_setup.cli.workspace import Workspace
+from aurmr_setup.core.workspace import get_all_workspaces
+from aurmr_setup.core.workspace import Workspace
 
 
 logger = logging.getLogger(__name__)

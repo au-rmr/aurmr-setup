@@ -13,10 +13,10 @@ from click_prompt import auto_complete_option
 from aurmr_setup.cli.main import cli
 from aurmr_setup.cli.main import console
 
-from aurmr_setup.cli.workspace import WORKSPACE_DIR
-from aurmr_setup.cli.workspace import Workspace
-from aurmr_setup.cli.workspace import get_active_workspace
-from aurmr_setup.cli.workspace import get_all_workspaces
+from aurmr_setup.core.workspace import WORKSPACE_DIR
+from aurmr_setup.core.workspace import Workspace
+from aurmr_setup.core.workspace import get_active_workspace
+from aurmr_setup.core.workspace import get_all_workspaces
 
 logger = logging.getLogger(__name__)
 
