@@ -39,8 +39,6 @@ def create_workspace(workspace_name: str, python_version: str = '3.8'):
         logger.error('Unable to create workspace %s', workspace_name)
         sys.exit(1)
 
-
-
 @cli.command()
 def list():
     for w in Workspace.list():
@@ -83,29 +81,16 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
         logger.warning('No workspace selected')
         sys.exit(1)
 
-    workspace_full_path = os.path.join(WORKSPACE_DIR, new_workspace_name)
-    workspace_full_path = os.path.expanduser(workspace_full_path)
-    if os.path.exists(workspace_full_path):
+
+    to_clone = Workspace(clone_from_workspace)
+    new_workspace = Workspace(new_workspace_name)
+    if new_workspace.exists():
         logger.error('Workspace already exists %s', workspace_full_path)
         sys.exit(1)
 
-    cmd = ['conda', 'create', '--clone', clone_from_workspace, '-n', new_workspace_name]
-    subprocess.run(cmd, check=True)
-
-    clone_workspace_full_path = os.path.join(WORKSPACE_DIR, clone_from_workspace)
-    clone_workspace_full_path = os.path.expanduser(clone_workspace_full_path)
-    clone_workspace_full_path = clone_workspace_full_path + '/'
-
-    cmd = ['rsync', '-av', '-P', '--exclude=build', '--exclude=devel',
-            '--exclude=logs', clone_workspace_full_path, workspace_full_path]
-    subprocess.run(cmd, check=True)
-
-    #cmd = ['catkin', 'build']
-    #subprocess.run(cmd, check=True, cwd=workspace_full_path)
-
-    print("Missing steps: 1.) activate the workspace 2.) Run catkin build 3.) reopen terminal and activate workspace again")
-
-    print('Done. Please close the terminal and activate the workspace again')
+    if to_clone.clone(new_workspace):
+        print("Done."
+        print("Missing steps: 1.) activate the workspace 2.) Run catkin build 3.) reopen terminal and activate workspace again")
 
 
 

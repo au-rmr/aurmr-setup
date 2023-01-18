@@ -64,9 +64,23 @@ class Workspace:
         with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
             f.write(str(self.workspace_name))
 
-
     def clone(self, other):
-        pass
+
+        if isinstance(other, basestring):
+            other = Workspace(other)
+
+        if other.exists():
+            return None
+
+        cmd = ['conda', 'create', '--clone', self.workspace_name, '-n', other.workspace_name]
+        subprocess.run(cmd, check=True)
+
+        cmd = ['rsync', '-av', '-P', '--exclude=build', '--exclude=devel',
+                '--exclude=logs', self.full_path + '/', other.full_path]
+        subprocess.run(cmd, check=True)
+
+        return other
+
 
     def exists(self) -> bool:
         return os.path.exists(self.full_path)
