@@ -82,3 +82,5 @@ antigen theme robbyrussell
 
 antigen apply
 EOF
+
+chsh -s /usr/bin/zsh
