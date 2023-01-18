@@ -83,7 +83,7 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
         sys.exit(1)
 
     if to_clone.clone(new_workspace):
-        print("Done."
+        print("Done.")
         print("Missing steps: 1.) activate the workspace 2.) Run catkin build 3.) reopen terminal and activate workspace again")
 
 
