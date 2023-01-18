@@ -91,5 +91,13 @@ class Workspace:
         subprocess.run(cmd, check=True, shell=True)
         rmtree(self.full_path)
 
+    def update_src(self):
+        for r in os.listdir(self.src_path):
+            r = os.path.join(self.full_path, r)
+            if os.path.isdir(os.path.join(r, '.git')):
+                cmd = ['git', 'pull', '-r']
+                subprocess.run(cmd, check=True, cwd=r)
+
+
     def __str__(self):
         return self.workspace_name

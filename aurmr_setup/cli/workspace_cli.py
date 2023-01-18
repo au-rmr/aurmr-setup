@@ -1,5 +1,4 @@
 import sys
-import os
 import logging
 import subprocess
 
@@ -77,11 +76,6 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
     """
     Clone an existing workspace.
     """
-    if not clone_from_workspace:
-        logger.warning('No workspace selected')
-        sys.exit(1)
-
-
     to_clone = Workspace(clone_from_workspace)
     new_workspace = Workspace(new_workspace_name)
     if new_workspace.exists():
@@ -104,15 +98,7 @@ def update():
         logger.error('Select a workspace first')
         sys.exit(1)
 
-    workspace_src_path = Workspace(workspace_name).src_path
-
-    for r in os.listdir(workspace_src_path):
-        r = os.path.join(workspace_src_path, r)
-        if os.path.isdir(os.path.join(r, '.git')):
-            cmd = ['git', 'pull', '-r']
-            subprocess.run(cmd, check=True, cwd=r)
-    
-
+    Workspace(workspace_name).update_src()
 
 
 def get_all_ros_packages():
