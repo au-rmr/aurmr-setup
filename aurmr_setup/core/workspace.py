@@ -66,7 +66,7 @@ class Workspace:
 
     def clone(self, other):
 
-        if isinstance(other, basestring):
+        if isinstance(other, str):
             other = Workspace(other)
 
         if other.exists():
