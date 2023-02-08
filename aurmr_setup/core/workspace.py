@@ -69,6 +69,9 @@ class Workspace:
         if Workspace(name).exists():
             logger.error('Workspace already exists')
             return None
+        if Workspace(name, True).exists():
+            logger.error('Workspace already exists and is archived.')
+            return None
 
         with path(user_scripts, '10_create_new_workspace.sh') as script_full_path:
             subprocess.run([str(script_full_path), name, python_version], check=True)
