@@ -144,6 +144,17 @@ def archive(workspace_name: str):
 
 
 @cli.command()
+@click.argument('workspace-name')
+def unarchive(workspace_name: str):
+    workspace = Workspace(workspace_name, True)
+    if not workspace.exists():
+        logging.error('Workspace not archived')
+        sys.exit(-1)
+    workspace.import_from_archive()
+
+
+
+@cli.command()
 @auto_complete_option('--package', type=click.Choice(get_all_src_packages()))
 def add_src(package: str):
     """

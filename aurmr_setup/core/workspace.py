@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 WORKSPACE_DIR = '~/workspaces/'
 ACTIVE_WORKSPACE = '~/.active_workspace'
 ARCHIVE_DIR = 'archive'
+ENVIRONMENT_FILE = 'environment.yml'
 
 @lru_cache(1)
 def get_all_workspaces() -> List[str]:
@@ -126,11 +127,33 @@ class Workspace:
                 cmd = ['git', 'pull', '-r']
                 subprocess.run(cmd, check=True, cwd=r)
 
+
+    def import_from_archive(self):
+        import shutil
+
+        env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
+        cmd = f'conda env create -f {env_file}'
+        subprocess.run(cmd, check=True, shell=True)
+
+        target = os.path.expanduser(WORKSPACE_DIR)
+        shutil.move(self.full_path , target)
+
+        self.archived = False
+
     def move_to_archive(self):
         import shutil
+
+        env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
+        cmd = f'conda env export -n {self.workspace_name} -f {env_file}'
+        subprocess.run(cmd, check=True, shell=True)
+
         target = os.path.join(WORKSPACE_DIR, ARCHIVE_DIR)
         target = os.path.expanduser(target)
         shutil.move(self.full_path , target)
+
+        cmd = f'conda env remove -n {self.workspace_name}'
+        subprocess.run(cmd, check=True, shell=True)
+
         self.archived = True
 
     def __str__(self):
