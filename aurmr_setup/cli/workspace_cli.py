@@ -39,8 +39,9 @@ def create_workspace(workspace_name: str, python_version: str = '3.8'):
         sys.exit(1)
 
 @cli.command()
-def list():
-    for w in Workspace.list():
+@click.option('--all', '-a', default=False, is_flag=True)
+def list(all: bool):
+    for w in Workspace.list(all):
         print(w)
 
 @cli.command()
@@ -130,6 +131,16 @@ def add(package: str):
         sys.exit(1)
     cmd = ['mamba', 'install', package]
     subprocess.run(cmd, check=True)
+
+
+@cli.command()
+@click.argument('workspace-name')
+def archive(workspace_name: str):
+    workspace = Workspace(workspace_name)
+    if workspace.archived:
+        logging.error('Workspace already archived')
+        sys.exit(-1)
+    workspace.move_to_archive()
 
 
 @cli.command()

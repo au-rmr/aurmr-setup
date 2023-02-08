@@ -14,16 +14,31 @@ logger = logging.getLogger(__name__)
 
 WORKSPACE_DIR = '~/workspaces/'
 ACTIVE_WORKSPACE = '~/.active_workspace'
+ARCHIVE_DIR = 'archive'
 
 @lru_cache(1)
 def get_all_workspaces() -> List[str]:
-    workspaces = os.path.expanduser(WORKSPACE_DIR)
-    if not os.path.isdir(workspaces):
-        logger.error('Workspace folder does not exists. Please create %s', workspaces)
+    workspace_dir = os.path.expanduser(WORKSPACE_DIR)
+    if not os.path.isdir(workspace_dir):
+        logger.error('Workspace folder does not exists. Please create %s', workspace_dir)
         return []
     return [workspace
-           for workspace in os.listdir(workspaces)
-           if os.path.isdir(os.path.join(workspaces, workspace))]
+           for workspace in os.listdir(workspace_dir)
+           if os.path.isdir(os.path.join(workspace_dir, workspace))
+           and not workspace == ARCHIVE_DIR]
+
+
+@lru_cache(1)
+def get_archived_workspaces() -> List[str]:
+    workspace_dir = os.path.expanduser(WORKSPACE_DIR)
+    archive_dir = os.path.join(workspace_dir, ARCHIVE_DIR)
+    if not os.path.isdir(archive_dir):
+        logger.error('Archive folder does not exists. Please create %s', archive_dir)
+        return []
+    return [workspace 
+            for workspace in os.listdir(archive_dir)
+            if os.path.isdir(os.path.join(archive_dir, workspace))]
+
 
 def get_active_workspace():
     workspace_name = os.environ.get('WORKSPACE_NAME', None)
@@ -31,12 +46,17 @@ def get_active_workspace():
 
 class Workspace:
 
-    def __init__(self, workspace_name: str):
+    def __init__(self, workspace_name: str, archived: bool=False):
         self.workspace_name = workspace_name
+        self.archived = archived
 
     @property
     def full_path(self):
-        workspace_full_path = os.path.join(WORKSPACE_DIR, self.workspace_name)
+        if self.archived:
+            archive_dir = os.path.join(WORKSPACE_DIR, ARCHIVE_DIR)
+            workspace_full_path = os.path.join(archive_dir, self.workspace_name)
+        else:
+            workspace_full_path = os.path.join(WORKSPACE_DIR, self.workspace_name)
         workspace_full_path = os.path.expanduser(workspace_full_path)
         return workspace_full_path
 
@@ -57,8 +77,13 @@ class Workspace:
         return Workspace(workspace_name=name)
 
     @classmethod
-    def list(cls) -> List['Workspace']:
-        return [Workspace(w) for w in sorted(get_all_workspaces())]
+    def list(cls, list_archived: bool = False) -> List['Workspace']:
+        workspaces = [Workspace(w) for w in sorted(get_all_workspaces())]
+        if list_archived:
+            archives = [Workspace(w, True) for w in sorted(get_archived_workspaces())]
+            return archives + workspaces
+        else:
+            return workspaces
 
     def activate(self) -> None:
         with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
@@ -98,6 +123,12 @@ class Workspace:
                 cmd = ['git', 'pull', '-r']
                 subprocess.run(cmd, check=True, cwd=r)
 
+    def move_to_archive(self):
+        import shutil
+        target = os.path.join(WORKSPACE_DIR, ARCHIVE_DIR)
+        target = os.path.expanduser(target)
+        shutil.move(self.full_path , target)
+        self.archived = True
 
     def __str__(self):
         return self.workspace_name
