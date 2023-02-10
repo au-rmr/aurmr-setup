@@ -135,17 +135,26 @@ def add(package: str):
 
 @cli.command()
 @click.argument('workspace-name')
-def archive(workspace_name: str):
+@click.option('--overwrite-export', default=False, is_flag=True)
+def archive(workspace_name: str, overwrite_export: bool):
+    """
+    Archives a workspaces
+
+    The current conda environment will be exported to a environment.yaml.
+    """
     workspace = Workspace(workspace_name)
     if workspace.archived:
         logging.error('Workspace already archived')
         sys.exit(-1)
-    workspace.move_to_archive()
+    workspace.move_to_archive(overwrite_export)
 
 
 @cli.command()
 @click.argument('workspace-name')
 def unarchive(workspace_name: str):
+    """
+    Restores a previously archived workspace
+    """
     workspace = Workspace(workspace_name, True)
     if not workspace.exists():
         logging.error('Workspace not archived')

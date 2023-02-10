@@ -142,14 +142,14 @@ class Workspace:
 
         self.archived = False
 
-    def move_to_archive(self):
+    def move_to_archive(self, overwrite_export: bool=False):
         """
         """
         import shutil
 
         env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
 
-        if os.path.exists(env_file):
+        if os.path.exists(env_file) and not overwrite_export:
             logger.error(f'Unable to export environment. {ENVIRONMENT_FILE} already exists')
             return
 
