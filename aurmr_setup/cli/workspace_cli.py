@@ -41,6 +41,9 @@ def create_workspace(workspace_name: str, python_version: str = '3.8'):
 @cli.command()
 @click.option('--all', '-a', default=False, is_flag=True)
 def list(all: bool):
+    """
+    Lists all existing workspaces
+    """
     for w in Workspace.list(all):
         print(w)
 
