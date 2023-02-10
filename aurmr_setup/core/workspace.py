@@ -129,6 +129,8 @@ class Workspace:
 
 
     def import_from_archive(self):
+        """
+        """
         import shutil
 
         env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
@@ -136,20 +138,27 @@ class Workspace:
         subprocess.run(cmd, check=True, shell=True)
 
         target = os.path.expanduser(WORKSPACE_DIR)
-        shutil.move(self.full_path , target)
+        shutil.move(self.full_path, target)
 
         self.archived = False
 
     def move_to_archive(self):
+        """
+        """
         import shutil
 
         env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
+
+        if os.path.exists(env_file):
+            logger.error(f'Unable to export environment. {ENVIRONMENT_FILE} already exists')
+            return
+
         cmd = f'conda env export -n {self.workspace_name} -f {env_file}'
         subprocess.run(cmd, check=True, shell=True)
 
         target = os.path.join(WORKSPACE_DIR, ARCHIVE_DIR)
         target = os.path.expanduser(target)
-        shutil.move(self.full_path , target)
+        shutil.move(self.full_path, target)
 
         cmd = f'conda env remove -n {self.workspace_name}'
         subprocess.run(cmd, check=True, shell=True)
