@@ -5,11 +5,15 @@ source $basedir/activate_workspace.bashrc
 
 git clone git@github.com:microsoft/Azure_Kinect_ROS_Driver.git
 
-mkdir  deb
-apt download libk4a1.3 deb                                                                                                                                                                                                              
-apt download libk4a1.3-dev deb
-
+mkdir deb
 DEB_DIR=$(readlink -f deb)
+
+apt download libk4a1.3                                                                                                                                                                                                               
+apt download libk4a1.3-dev 
+
+deb -x  libk4a1.3.deb ${DEB_DIR}                                                                                                                                                                                                              
+deb -x libk4a1.3-dev.deb ${DEB_DIR}
+
 cd ..
 
 
