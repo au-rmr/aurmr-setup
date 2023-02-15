@@ -117,8 +117,8 @@ def get_all_ros_packages():
 def get_all_src_packages():
     return ['git@github.com:au-rmr/aurmr_tahoma.git',
             'git@github.com:au-rmr/aurmr_inventory.git',
-            'git@github.com:au-rmr/aurmr-dataset.git']
-            #'https://github.com/microsoft/Azure_Kinect_ROS_Driver.git']
+            'git@github.com:au-rmr/aurmr-dataset.git',
+            'git@github.com:au-rmr/Azure_Kinect_ROS_Driver.git']
 
 
 @cli.command()
