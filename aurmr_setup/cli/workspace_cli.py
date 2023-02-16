@@ -118,7 +118,7 @@ def get_all_src_packages():
     return ['git@github.com:au-rmr/aurmr_tahoma.git',
             'git@github.com:au-rmr/aurmr_inventory.git',
             'git@github.com:au-rmr/aurmr-dataset.git',
-            'git@github.com:au-rmr/Azure_Kinect_ROS_Driver.git']
+            'git@github.com:au-rmr/Azure_Kinect_ROS_Driver.git#melodic']
 
 
 @cli.command()
@@ -187,8 +187,12 @@ def add_src(package: str):
     
     workspace_src_path = Workspace(workspace_name).src_path
 
-    url = package
-    branch = 'main'
+
+    if '#' in package:
+        url, branch = package.rsplit('#', 2)
+    else:
+        url = package
+        branch = 'main'
 
     cmd = ['git', 'clone', '-b', branch, url]
     subprocess.run(cmd, check=True, cwd=workspace_src_path)
