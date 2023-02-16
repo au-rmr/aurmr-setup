@@ -152,6 +152,10 @@ def archive(workspace_name: str, overwrite_export: bool):
     workspace.move_to_archive(overwrite_export)
 
 
+    if questionary.confirm(f'Do you really want to archive the workspace {workspace}', default=False).ask():
+        workspace.move_to_archive(overwrite_export, remove_env)
+
+
 @cli.command()
 @click.argument('workspace-name')
 def unarchive(workspace_name: str):
