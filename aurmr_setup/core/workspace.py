@@ -142,7 +142,7 @@ class Workspace:
 
         self.archived = False
 
-    def move_to_archive(self, overwrite_export: bool=False):
+    def move_to_archive(self, overwrite_export: bool=False, remove_env: bool=True):
         """
         """
         import shutil
@@ -160,8 +160,9 @@ class Workspace:
         target = os.path.expanduser(target)
         shutil.move(self.full_path, target)
 
-        cmd = f'conda env remove -n {self.workspace_name}'
-        subprocess.run(cmd, check=True, shell=True)
+        if remove_env:
+            cmd = f'conda env remove -n {self.workspace_name}'
+            subprocess.run(cmd, check=True, shell=True)
 
         self.archived = True
 

@@ -139,7 +139,8 @@ def add(package: str):
 @cli.command()
 @click.argument('workspace-name')
 @click.option('--overwrite-export', default=False, is_flag=True)
-def archive(workspace_name: str, overwrite_export: bool):
+@click.option('--remove-env/--keep-env', default=True)
+def archive(workspace_name: str, overwrite_export: bool, remove_env: bool):
     """
     Archives a workspaces
 
@@ -149,8 +150,11 @@ def archive(workspace_name: str, overwrite_export: bool):
     if workspace.archived:
         logging.error('Workspace already archived')
         sys.exit(-1)
-    workspace.move_to_archive(overwrite_export)
 
+    if remove_env:
+        print('Conda environment will be exported and [red][b]removed[/b][/red].')
+        print('Restoring the environment  might not work for local installed packages.')
+        print('Please use the flag --keep-env if you do not want to do this.')
 
     if questionary.confirm(f'Do you really want to archive the workspace {workspace}', default=False).ask():
         workspace.move_to_archive(overwrite_export, remove_env)
