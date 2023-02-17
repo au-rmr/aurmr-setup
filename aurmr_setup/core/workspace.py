@@ -120,6 +120,10 @@ class Workspace:
         subprocess.run(cmd, check=True, shell=True)
         rmtree(self.full_path)
 
+    def upgrade(self):
+        cmd = f'mamba upgrade -c conda-forge --all -n {self.workspace_name}'
+        subprocess.run(cmd, check=True, shell=True)
+
     def update_src(self):
         for r in os.listdir(self.src_path):
             r = os.path.join(self.full_path, r)
