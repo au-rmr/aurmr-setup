@@ -45,7 +45,7 @@ def list(all: bool):
     Lists all existing workspaces
     """
     for w in Workspace.list(all):
-        print(w)
+        console.print(w)
 
 @cli.command()
 @choice_option('--workspace', type=click.Choice(get_all_workspaces() + ['new']))
@@ -87,8 +87,8 @@ def clone(clone_from_workspace: str, new_workspace_name: str):
         sys.exit(1)
 
     if to_clone.clone(new_workspace):
-        print("Done.")
-        print("Missing steps: 1.) activate the workspace 2.) Run catkin build 3.) reopen terminal and activate workspace again")
+        console.print("Done.")
+        console.print("Missing steps: 1.) activate the workspace 2.) Run catkin build 3.) reopen terminal and activate workspace again")
 
 
 
