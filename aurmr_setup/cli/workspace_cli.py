@@ -106,8 +106,9 @@ def update():
 
 
 def get_all_ros_packages():
+    misc = ['catkin_tools', 'rosdep']
     from . import robostack_utils
-    return robostack_utils.packages
+    return robostack_utils.packages + misc
     """
     import pandas as pd
     df = pd.read_html('https://robostack.github.io/noetic.html')[0]
