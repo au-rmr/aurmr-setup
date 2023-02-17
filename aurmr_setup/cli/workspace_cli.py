@@ -133,8 +133,22 @@ def add(package: str):
     if not workspace_name:
         logger.error('Select a workspace first')
         sys.exit(1)
-    cmd = ['mamba', 'install', package]
-    subprocess.run(cmd, check=True)
+    workspace = Workspace(workspace_name)
+    workspace.install(package)
+
+    find_and_install_missing_packages(workspace)
+
+
+
+def find_and_install_missing_packages(workspace: Workspace):
+    from aurmr_setup.core.utils import get_packages
+    missing_packages = get_packages(workspace)
+    if not missing_packages:
+        console.print('Found missing packages')
+        for p in missing_packages:
+            console.print(p)
+    if questionary.confirm(f'Do you want to install {len(missing_packages)} packages?').ask():
+        workspace.install(' '.join(missing_packages))
 
 
 @cli.command()
@@ -185,9 +199,9 @@ def add_src(package: str):
     if not workspace_name:
         logger.error('Select a workspace first')
         sys.exit(1)
-    
-    workspace_src_path = Workspace(workspace_name).src_path
-
+ 
+    workspace = Workspace(workspace_name)
+    workspace_src_path = workspace.src_path
 
     if '#' in package:
         url, branch = package.rsplit('#', 2)
@@ -198,4 +212,5 @@ def add_src(package: str):
     cmd = ['git', 'clone', '-b', branch, url]
     subprocess.run(cmd, check=True, cwd=workspace_src_path)
 
+    find_and_install_missing_packages(workspace)
 
