@@ -128,6 +128,11 @@ class Workspace:
                 subprocess.run(cmd, check=True, cwd=r)
 
 
+    def install(self, package):
+        cmd = f'mamba install {package}'
+        subprocess.run(cmd, check=True, shell=True)
+
+
     def import_from_archive(self):
         """
         """
