@@ -1,6 +1,6 @@
 import os
 import subprocess
-
+from aurmr_setup.core.workspace import Workspace
 
 def get_sys_distributor():
     cmd = 'lsb_release -i -s'
@@ -8,7 +8,7 @@ def get_sys_distributor():
 def get_sys_codename(): 
     cmd = 'lsb_release -c -s'
 
-def get_packages(self, workspace: Workspace):
+def get_packages(workspace: Workspace):
     """
     get list of packages
 
@@ -25,3 +25,4 @@ def get_packages(self, workspace: Workspace):
             l = l.rsplit(PATTERN)[-1]
             packages.append(l)
     return packages
+
