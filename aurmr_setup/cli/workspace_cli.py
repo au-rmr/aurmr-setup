@@ -107,7 +107,7 @@ def update():
 
 def get_all_ros_packages():
     misc = ['catkin_tools', 'rosdep']
-    from . import robostack_utils
+    from aurmr_setup.core import robostack_utils
     return robostack_utils.packages + misc
     """
     import pandas as pd
