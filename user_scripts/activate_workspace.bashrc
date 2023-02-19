@@ -10,7 +10,7 @@ else
 	exit 1
 fi
 
-source "/home/aurmr/miniconda3/etc/profile.d/conda.sh"
+source "$HOME/miniconda3/etc/profile.d/conda.sh"
 conda activate $WORKSPACE_NAME
 
 mkdir -p $HOME/workspaces/$WORKSPACE_NAME/src

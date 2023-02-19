@@ -36,7 +36,7 @@ mkdir /home/aurmr/workspaces
 sudo apt install fuse3 sshfs
 
 sudo mkdir /workspaces/
-sudo chown aurmr:aurmr /workspaces
+sudo chown $USER /workspaces
 
 static_hostname=$(hostnamectl status --static)
 
