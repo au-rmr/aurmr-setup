@@ -154,8 +154,8 @@ def find_and_install_missing_packages(workspace: Workspace):
         console.print('Unable to find the following packages')
         for p in missing_packages:
             console.print(f' - {p}')
-    if questionary.confirm(f'Do you want to install {len(robostack_packages)} packages?').ask():
-        workspace.install(' '.join(robostack_packages))
+        if questionary.confirm(f'Do you want to install {len(robostack_packages)} packages?').ask():
+            workspace.install(' '.join(robostack_packages))
 
 
 @cli.command()
