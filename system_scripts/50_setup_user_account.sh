@@ -20,7 +20,7 @@ git config --global user.name "UW Amazon Manipulation Project"
 
 
 # setup bash: configure fzf, PATH and user script
-user_setup_script=/home/aurmr/aurmr-setup/user_scripts/aurmr_setup.bashrc
+user_setup_script=$HOME/aurmr-setup/user_scripts/aurmr_setup.bashrc
 #user_setup_script=$( dirname -- "$0"; )
 #user_setup_script="${user_setup_script}/../user_scripts/setup.bash"
 #user_setup_script=$( readlink -f "${user_setup_script}" )
@@ -55,7 +55,7 @@ antigen init $HOME/.antigenrc
 
 export CDPATH=\$CDPATH:$HOME/workspaces/
 
-source /home/aurmr/aurmr-setup/user_scripts/aurmr_setup.bashrc
+source $user_setup_script
 export PATH=\$PATH:$HOME/.local/bin
 EOF
 
