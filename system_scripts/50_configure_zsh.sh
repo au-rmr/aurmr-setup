@@ -1,5 +1,7 @@
 #!/bin/bash -exu
 
+sudo apt install zsh
+
 user_setup_script=$(dirname "$0")
 user_setup_script=${user_setup_script}/../user_scripts/setup.bash
 user_setup_script=$(readlink -f "${user_setup_script}")
