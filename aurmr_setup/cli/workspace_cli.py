@@ -146,7 +146,7 @@ def find_and_install_missing_packages(workspace: Workspace):
     required_packages = get_packages(workspace)
     robostack_packages = [p for p in required_packages if p in robostack_utils.packages]
     missing_packages = [p for p in required_packages if p not in robostack_utils.packages]
-    if not missing_packages:
+    if missing_packages:
         console.print(f'Found {len(required_packages)} required packages')
         console.print('Found required packages on robostack')
         for p in robostack_packages:
