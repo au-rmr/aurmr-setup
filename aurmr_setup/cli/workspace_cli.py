@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 @cli.command()
 @click.option('--workspace_name', prompt="Name of the new workspace")
 @choice_option('--python-version', type=click.Choice(['3.8', '3.9']))
-def init(workspace_name: str, python_version: str):
+@choice_option('--rosdistro', type=click.Choice(['noetic']))
+def init(workspace_name: str, python_version: str, rosdistro: str):
     """
     Initializes a new and empty workspace
     """
