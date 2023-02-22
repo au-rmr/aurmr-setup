@@ -15,7 +15,7 @@ def get_packages(workspace: Workspace):
     we have to manually set the operating system as robostack overwrites it
     """
     packages = []
-    cmd = f'rosdep install --ignore-src --from-paths {workspace.full_path} -r -s --os="ubuntu:focal"'
+    cmd = f'rosdep install --ignore-src --from-paths {workspace.full_path} -r -s --os="ubuntu:focal" --rosdistro {workspace.config.rosdistro}'
     c = subprocess.run(cmd, check=True, shell=True, capture_output=True)
     s = c.stdout
     lines = s.decode('utf8').split('\n')

@@ -10,6 +10,8 @@ from importlib.resources import path
 
 import user_scripts
 
+from aurmr_setup.core.config import WorkspaceConfig
+
 logger = logging.getLogger(__name__)
 
 WORKSPACE_DIR = '~/workspaces/'
@@ -50,6 +52,7 @@ class Workspace:
     def __init__(self, workspace_name: str, archived: bool=False):
         self.workspace_name = workspace_name
         self.archived = archived
+        self.config = WorkspaceConfig()
 
     @property
     def full_path(self):
