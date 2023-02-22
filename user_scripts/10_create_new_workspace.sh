@@ -37,7 +37,6 @@ conda config --env --add channels robostack
 mamba install -y compilers cmake pkg-config make ninja colcon-common-extensions 
 
 mamba install -y catkin_tools rosdep
-rosdep init
 rosdep update
 
 echo """
