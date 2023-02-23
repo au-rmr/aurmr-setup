@@ -74,22 +74,27 @@ def remove_workspace(workspace):
        
 
 
-@choice_option('--clone-from-workspace', type=click.Choice(get_all_workspaces()))
-@click.argument('new-workspace-name')
+@click.option('--to-workspace', prompt='Name of the new workspace')
+@choice_option('--from-workspace', type=click.Choice(get_all_workspaces()), prompt='Select the workspace to clone')
 @cli.command()
-def clone(clone_from_workspace: str, new_workspace_name: str):
+def clone(from_workspace: str, to_workspace: str):
     """
     Clone an existing workspace.
     """
-    to_clone = Workspace(clone_from_workspace)
-    new_workspace = Workspace(new_workspace_name)
-    if new_workspace.exists():
-        logger.error('Workspace already exists %s', workspace_full_path)
+    from_workspace = Workspace(from_workspace)
+    to_workspace = Workspace(to_workspace)
+    if to_workspace.exists():
+        logger.error('Workspace already exists %s', to_workspace.workspace_full_path)
         sys.exit(1)
 
-    if to_clone.clone(new_workspace):
+    if from_workspace.clone(to_workspace):
         console.print("Done.")
         console.print("Missing steps: 1.) activate the workspace 2.) Run catkin build 3.) reopen terminal and activate workspace again")
+
+        #to_workspace.build()
+
+        
+
 
 
 
