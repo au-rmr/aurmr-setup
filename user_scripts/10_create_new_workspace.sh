@@ -36,6 +36,8 @@ conda config --env --add channels robostack
 mamba install -y catkin_tools rosdep
 rosdep update
 
+catkin build --workspace $HOME/workspaces/$WORKSPACE_NAME/
+
 echo """
 =========================================
 Done setting up workspace $WORKSPACE_NAME
