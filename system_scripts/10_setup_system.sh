@@ -1,7 +1,25 @@
 #!/bin/bash -eux
 
+
+# upgrade the system
+
 sudo apt update
 sudo apt upgrade
+
+# disable unattended upgrades
+
+sudo dpkg-reconfigure unattended-upgrades
+
+# no install recommends
+
+cat | sudo tee -a /etc/apt/apt.conf.d/01norecommend << EOF
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+EOF
+
+
+# remove whoopsie 
+
 sudo apt purge whoopsie
 
 # add essential tools
@@ -9,7 +27,7 @@ sudo apt install vim tmux fzf zsh htop curl git
 sudo apt install net-tools
 sudo apt install lm-sensors
 
-# ssh  server
+# ssh server
 sudo apt install openssh-server
 
 # configure vim
@@ -28,7 +46,7 @@ sudo ubuntu-drivers autoinstall
 
 ssh-keygen
 
-
+# create workspace
 
 mkdir $HOME/workspaces
 
