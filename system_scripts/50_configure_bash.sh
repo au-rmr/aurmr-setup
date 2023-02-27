@@ -2,9 +2,10 @@
 
 sudo apt install fzf
 
-user_setup_script=$(dirname "$0")
-user_setup_script=${user_setup_script}/../user_scripts/setup.bash
-user_setup_script=$(readlink -f "${user_setup_script}")
+
+aurmr_dir=$(dirname "$0")
+aurmr_dir=${aurmr_dir}/../
+user_setup_script=$(readlink -f "${aurmr_dir}/user_scripts/aurmr_setup.bashrc")
 
 cat >> $HOME/.bashrc <<EOF
 if [ -f /usr/share/doc/fzf/examples/completion.bash ]; then
@@ -15,7 +16,14 @@ if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
 	source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
 
-source $user_setup_script
+if [ -f ${aurmr_dir}/shell-complete/aurmr-complete.bash ]; then
+	source ${aurmr_dir}/shell-complete/aurmr-complete.bash
+fi
+
+if [ -f ${user_setup_script} ]; then
+	source ${user_setup_script}
+fi
+
 
 export PATH=$HOME/.local/bin:\$PATH
 EOF
