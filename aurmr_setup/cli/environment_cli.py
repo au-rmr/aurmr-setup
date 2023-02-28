@@ -1,12 +1,13 @@
+import subprocess
+import rich_click as click
+
 from click_prompt import choice_option
 
 from aurmr_setup.cli.main_cli import cli
-from aurmr_setup.core.workspace import get_all_workspaces
 
 from click_prompt import auto_complete_option
 from aurmr_setup.core.workspace import Workspace
 from aurmr_setup.core.workspace import get_active_workspace
-from aurmr_setup.core.workspace import get_all_workspaces
 
 import sys
 import logging
@@ -22,6 +23,7 @@ def get_all_ros_packages():
     df = pd.read_html('https://robostack.github.io/noetic.html')[0]
     return list(df.Package)
     """
+
 
 
 @cli.command()
@@ -41,3 +43,31 @@ def add(package: str):
     find_and_install_missing_packages(workspace)
 
 
+
+
+def worksspace_option(f):
+    """
+    decorate for workspaces
+
+    use current workspace if already activated
+    """
+    @choice_option('--workspace', type=click.Choice(Workspace.list()))
+    def fn(**kwargs):
+        return f(kwargs)
+    return fn
+
+@cli.command()
+@choice_option('--workspace', type=click.Choice(Workspace.list()))
+def shell(workspace: str):
+    subprocess.call('ipython', shell=True)
+    #from IPython import embed
+    #embed(header=f'{workspace}')
+
+
+
+@cli.command()
+@choice_option('--workspace', type=click.Choice(Workspace.list()))
+def run(workspace: str):
+    subprocess.call('ipython', shell=True)
+    #from IPython import embed
+    #embed(header=f'{workspace}')

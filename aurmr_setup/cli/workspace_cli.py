@@ -1,5 +1,4 @@
 import sys
-:xa
 import logging
 import subprocess
 
@@ -13,10 +12,8 @@ from click_prompt import auto_complete_option
 from aurmr_setup.cli.main_cli import cli
 from aurmr_setup.cli.main_cli import console
 
-from aurmr_setup.core.workspace import WORKSPACE_DIR
 from aurmr_setup.core.workspace import Workspace
 from aurmr_setup.core.workspace import get_active_workspace
-from aurmr_setup.core.workspace import get_all_workspaces
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +52,7 @@ def list(all: bool):
         console.print(w)
 
 @cli.command()
-@choice_option('--workspace', type=click.Choice(get_all_workspaces() + ['new']))
+@choice_option('--workspace', type=click.Choice(Workspace.list() + ['new']))
 def select(workspace: str):
     """
     Selects a workspace. Typically you want to run `activate` in your shell
@@ -69,7 +66,7 @@ def select_workspace(workspace: str):
     return Workspace(workspace).activate()
 
 @cli.command()
-@choice_option('--workspace', type=click.Choice(get_all_workspaces()))
+@choice_option('--workspace', type=click.Choice(Workspace.list()))
 def remove_workspace(workspace):
     """
     Removes a workspace
@@ -81,7 +78,7 @@ def remove_workspace(workspace):
 
 
 @click.option('--to-workspace', prompt='Name of the new workspace')
-@choice_option('--from-workspace', type=click.Choice(get_all_workspaces()), prompt='Select the workspace to clone')
+@choice_option('--from-workspace', type=click.Choice(Workspace.list()), prompt='Select the workspace to clone')
 @cli.command()
 def clone(from_workspace: str, to_workspace: str):
     """
@@ -98,10 +95,6 @@ def clone(from_workspace: str, to_workspace: str):
         console.print("Missing steps: 1.) activate the workspace 2.) Run catkin build 3.) reopen terminal and activate workspace again")
 
         #to_workspace.build()
-
-        
-
-
 
 
 @cli.command()
@@ -157,9 +150,9 @@ def archive(workspace_name: str, overwrite_export: bool, remove_env: bool):
         sys.exit(-1)
 
     if remove_env:
-        print('Conda environment will be exported and [red][b]removed[/b][/red].')
-        print('Restoring the environment  might not work for local installed packages.')
-        print('Please use the flag --keep-env if you do not want to do this.')
+        console.print('Conda environment will be exported and [red][b]removed[/b][/red].')
+        console.print('Restoring the environment  might not work for local installed packages.')
+        console.print('Please use the flag --keep-env if you do not want to do this.')
 
     if questionary.confirm(f'Do you really want to archive the workspace {workspace}', default=False).ask():
         workspace.move_to_archive(overwrite_export, remove_env)

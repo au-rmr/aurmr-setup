@@ -23,7 +23,6 @@ import questionary
 from aurmr_setup.cli.main_cli import cli
 from aurmr_setup.cli.main_cli import console
 
-from aurmr_setup.core.workspace import get_all_workspaces
 from aurmr_setup.core.workspace import Workspace
 
 
@@ -71,7 +70,7 @@ def get_user_scripts() -> List[str]:
 
 @recipes.command()
 @choice_option('--software', multiple=True, type=click.Choice(get_user_scripts()))
-@choice_option('--workspace', type=click.Choice(get_all_workspaces()))
+@choice_option('--workspace', type=click.Choice(Workspace.list()))
 def user(software: str, workspace: str):
     """
     Installs software from a given recipe, i.e. shell script, to a given workspace

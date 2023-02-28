@@ -19,30 +19,6 @@ ACTIVE_WORKSPACE = '~/.active_workspace'
 ARCHIVE_DIR = 'archive'
 ENVIRONMENT_FILE = 'environment.yml'
 
-@lru_cache(1)
-def get_all_workspaces() -> List[str]:
-    workspace_dir = os.path.expanduser(WORKSPACE_DIR)
-    if not os.path.isdir(workspace_dir):
-        logger.error('Workspace folder does not exists. Please create %s', workspace_dir)
-        return []
-    return [workspace
-           for workspace in os.listdir(workspace_dir)
-           if os.path.isdir(os.path.join(workspace_dir, workspace))
-           and not workspace == ARCHIVE_DIR]
-
-
-@lru_cache(1)
-def get_archived_workspaces() -> List[str]:
-    workspace_dir = os.path.expanduser(WORKSPACE_DIR)
-    archive_dir = os.path.join(workspace_dir, ARCHIVE_DIR)
-    if not os.path.isdir(archive_dir):
-        logger.error('Archive folder does not exists. Please create %s', archive_dir)
-        return []
-    return [workspace 
-            for workspace in os.listdir(archive_dir)
-            if os.path.isdir(os.path.join(archive_dir, workspace))]
-
-
 def get_active_workspace():
     workspace_name = os.environ.get('WORKSPACE_NAME', None)
     return workspace_name
@@ -84,7 +60,10 @@ class Workspace:
         return Workspace(workspace_name=name)
 
     @classmethod
+    @lru_cache()
     def list(cls, list_archived: bool = False) -> List['Workspace']:
+        from aurmr_setup.utils.workspace_utils import get_all_workspaces
+        from aurmr_setup.utils.workspace_utils import get_archived_workspaces
         workspaces = [Workspace(w) for w in sorted(get_all_workspaces())]
         if list_archived:
             archives = [Workspace(w, True) for w in sorted(get_archived_workspaces())]
