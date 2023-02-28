@@ -11,19 +11,19 @@ https://wiki.archlinux.org/title/Realtime_kernel_patchset
 # kernel version without -generic flag
 KERNEL_VERSION=`uname -r | sed 's/-generic//g'`
 
-if [ "${KERNEL_VERSION}" != "5.15.0-41" ]; then
-    echo "Script was written for a different kernel version"
-    exit 1
-fi
+#if [ "${KERNEL_VERSION}" != "5.15.0-41" ]; then
+#    echo "Script was written for a different kernel version"
+#    exit 1
+#fi
 
-TEMP_DIR=$(mktemp -d -p . rt_patch_XXXXXXXXXX)
+TEMP_DIR=$(mktemp -d -p $HOME rt_patch_XXXXXXXXXX)
 cd $TEMP_DIR
 
 
 
 # install dependencies
-sudo apt install build-essential git libssl-dev libelf-dev flex bison
-
+sudo apt install build-essential git libssl-dev libelf-dev flex bison 
+sudo apt install bc curl ca-certificates gnupg2 libssl-dev lsb-release bison flex dwarves zstd libncurses-dev
 sudo apt install cpufrequtils
 sudo apt install rt-tests
 
@@ -32,18 +32,32 @@ sudo apt install rt-tests
 sudo cyclictest --smp -p98 -m -l 10000 -q | tee `date -I`_test_`uname -r`.log
 
 # download source files
-curl -SLO  https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.15.55.tar.gz
-curl -SLO https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/5.15/patch-5.15.55-rt48.patch.xz
 
-tar -xzvf linux-5.15.55.tar.gz
-cd linux-5.15.55
-xzcat ../patch-5.15*.patch.xz | patch -p1
+curl -SLO https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.9.1.tar.xz
+curl -SLO https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.9.1.tar.sign
+curl -SLO https://www.kernel.org/pub/linux/kernel/projects/rt/5.9/patch-5.9.1-rt20.patch.xz
+curl -SLO https://www.kernel.org/pub/linux/kernel/projects/rt/5.9/patch-5.9.1-rt20.patch.sign
 
-
-cp /boot/config-`uname -r` .config
+xz -d *.xz
 
 
-#sed -i -e 's/CONFIG_SYSTEM_TRUSTED_KEYS="debian/canonical-certs.pem"/CONFIG_SYSTEM_TRUSTED_KEYS=""/g' .config
+gpg2 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6092693E
+gpg2 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 2872E4CC
+
+
+gpg2 --verify linux-*.tar.sign
+gpg2 --verify patch-*.patch.sign
+
+
+tar xf linux-*.tar
+cd linux-*/
+patch -p1 < ../patch-*.patch
+
+sed -i -e 's/CONFIG_SYSTEM_TRUSTED_KEYS="debian/canonical-certs.pem"/CONFIG_SYSTEM_TRUSTED_KEYS=""/g' .config
+
+echo "TODO: activate  PREEMPT"
+
+make menuconfig
 make oldconfig
 
 make -j12
@@ -53,7 +67,7 @@ rm vmlinux-gdb.py
 
 make deb-pkg -j12
 
-dpkg -i  <todo>
+dpkg -i  ../*.deb
 
 # configure system
 sudo groupadd realtime
@@ -79,5 +93,5 @@ sudo systemctl daemon-reload && sudo systemctl restart cpufrequtils
 
 
 echo """reboot system and run
-cyclictest --smp -p98 -m | tee `date -I`_test_`uname -r`.log
+cyclictest --smp -p98 -m | tee \$(date -I)_test_\$(uname -r).log
 """
