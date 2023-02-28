@@ -8,6 +8,7 @@ from aurmr_setup.cli.main_cli import cli
 from click_prompt import auto_complete_option
 from aurmr_setup.core.workspace import Workspace
 from aurmr_setup.core.workspace import get_active_workspace
+from aurmr_setup.cli.utils import find_and_install_missing_packages
 
 import sys
 import logging

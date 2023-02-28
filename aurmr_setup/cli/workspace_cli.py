@@ -9,11 +9,14 @@ from click_prompt import confirm_option
 from click_prompt import choice_option
 from click_prompt import auto_complete_option
 
+from aurmr_setup.core.workspace import Workspace
+from aurmr_setup.core.workspace import get_active_workspace
+
 from aurmr_setup.cli.main_cli import cli
 from aurmr_setup.cli.main_cli import console
 
-from aurmr_setup.core.workspace import Workspace
-from aurmr_setup.core.workspace import get_active_workspace
+from aurmr_setup.cli.utils import find_and_install_missing_packages
+
 
 logger = logging.getLogger(__name__)
 
@@ -116,22 +119,6 @@ def get_all_src_packages():
             'git@github.com:au-rmr/aurmr-dataset.git',
             'git@github.com:au-rmr/Azure_Kinect_ROS_Driver.git#melodic']
 
-
-def find_and_install_missing_packages(workspace: Workspace):
-    from aurmr_setup.utils.environemnt_utils import find_required_dependencies
-    from aurmr_setup.utils.environemnt_utils import filter_packages
-    required_packages = find_required_dependencies(workspace)
-    installable_packages, missing_packages = filter_packages(required_packages)
-    if required_packages:
-        console.print(f'Found {len(required_packages)} required packages')
-        console.print('Found required packages on robostack')
-        for p in installable_packages:
-            console.print(f' - {p}')
-        console.print('Unable to find the following packages')
-        for p in missing_packages:
-            console.print(f' - {p}')
-        if installable_packages and questionary.confirm(f'Do you want to install {len(installable_packages)} packages?').ask():
-            workspace.install(' '.join(installable_packages))
 
 
 @cli.command()
