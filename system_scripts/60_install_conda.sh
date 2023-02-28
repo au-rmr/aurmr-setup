@@ -6,7 +6,7 @@
 sudo apt install curl 
 
 
-TEMP_DIR=$(mktemp -d -p . user_account_XXXXXXXXXX)
+TEMP_DIR=$(mktemp -d miniconda_XXXXXXXXXX)
 cd $TEMP_DIR
 
 
