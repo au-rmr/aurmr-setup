@@ -4,8 +4,8 @@ from aurmr_setup.core.workspace import Workspace
 
 from aurmr_setup.cli.main_cli import console
 
-from aurmr_setup.utils.environemnt_utils import find_required_dependencies
-from aurmr_setup.utils.environemnt_utils import filter_packages
+from aurmr_setup.utils.environment_utils import find_required_dependencies
+from aurmr_setup.utils.environment_utils import filter_packages
 
 def find_and_install_missing_packages(workspace: Workspace):
     required_packages = find_required_dependencies(workspace)
