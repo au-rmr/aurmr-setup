@@ -148,7 +148,7 @@ def add(package: str):
 
 def find_and_install_missing_packages(workspace: Workspace):
     from aurmr_setup.utils import robostack_utils
-    from aurmr_setup.core.utils import get_packages
+    from aurmr_setup.utils.environemnt_utils import get_packages
     required_packages = get_packages(workspace)
     robostack_packages = [p for p in required_packages if p in robostack_utils.packages]
     missing_packages = [p for p in required_packages if p not in robostack_utils.packages]
