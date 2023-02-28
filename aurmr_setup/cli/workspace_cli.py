@@ -34,6 +34,11 @@ def create_workspace(workspace_name: str, python_version: str = '3.8'):
     if not workspace_name:
         logger.warning('No workspace selected')
         sys.exit(1)
+
+    if Workspace(workspace_name).exists():
+        logger.error("Workspace already exists")
+        sys.exit(1)
+
     logger.info(f'creating workspace {workspace_name} with python {python_version}')
     workspace = Workspace.create(workspace_name, python_version)
     if not workspace:
