@@ -1,4 +1,5 @@
 import sys
+:xa
 import logging
 import subprocess
 
@@ -111,39 +112,11 @@ def update():
     Workspace(workspace_name).update_src()
 
 
-def get_all_ros_packages():
-    misc = ['catkin_tools', 'rosdep']
-    from aurmr_setup.utils import robostack_utils
-    return robostack_utils.packages + misc
-    """
-    import pandas as pd
-    df = pd.read_html('https://robostack.github.io/noetic.html')[0]
-    return list(df.Package)
-    """
-
 def get_all_src_packages():
     return ['git@github.com:au-rmr/aurmr_tahoma.git',
             'git@github.com:au-rmr/aurmr_inventory.git',
             'git@github.com:au-rmr/aurmr-dataset.git',
             'git@github.com:au-rmr/Azure_Kinect_ROS_Driver.git#melodic']
-
-
-@cli.command()
-@auto_complete_option('--package', choices=get_all_ros_packages())
-def add(package: str):
-    """
-    Installs a conda package to an activate workspace. Similar to `conda
-    install` but with auto completion for robostack.
-    """
-    workspace_name = get_active_workspace()
-    if not workspace_name:
-        logger.error('Select a workspace first')
-        sys.exit(1)
-    workspace = Workspace(workspace_name)
-    workspace.install(package)
-
-    find_and_install_missing_packages(workspace)
-
 
 
 def find_and_install_missing_packages(workspace: Workspace):
