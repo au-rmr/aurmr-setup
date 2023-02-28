@@ -113,7 +113,7 @@ def update():
 
 def get_all_ros_packages():
     misc = ['catkin_tools', 'rosdep']
-    from aurmr_setup.core import robostack_utils
+    from aurmr_setup.utils import robostack_utils
     return robostack_utils.packages + misc
     """
     import pandas as pd
@@ -147,7 +147,7 @@ def add(package: str):
 
 
 def find_and_install_missing_packages(workspace: Workspace):
-    from aurmr_setup.core import robostack_utils
+    from aurmr_setup.utils import robostack_utils
     from aurmr_setup.core.utils import get_packages
     required_packages = get_packages(workspace)
     robostack_packages = [p for p in required_packages if p in robostack_utils.packages]
