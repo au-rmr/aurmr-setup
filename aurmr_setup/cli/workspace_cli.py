@@ -125,21 +125,20 @@ def get_all_src_packages():
 
 
 def find_and_install_missing_packages(workspace: Workspace):
-    from aurmr_setup.utils import robostack_utils
-    from aurmr_setup.utils.environemnt_utils import get_packages
-    required_packages = get_packages(workspace)
-    robostack_packages = [p for p in required_packages if p in robostack_utils.packages]
-    missing_packages = [p for p in required_packages if p not in robostack_utils.packages]
+    from aurmr_setup.utils.environemnt_utils import find_required_dependencies
+    from aurmr_setup.utils.environemnt_utils import filter_packages
+    required_packages = find_required_dependencies(workspace)
+    installable_packages, missing_packages = filter_packages(required_packages)
     if required_packages:
         console.print(f'Found {len(required_packages)} required packages')
         console.print('Found required packages on robostack')
-        for p in robostack_packages:
+        for p in installable_packages:
             console.print(f' - {p}')
         console.print('Unable to find the following packages')
         for p in missing_packages:
             console.print(f' - {p}')
-        if robostack_packages and questionary.confirm(f'Do you want to install {len(robostack_packages)} packages?').ask():
-            workspace.install(' '.join(robostack_packages))
+        if installable_packages and questionary.confirm(f'Do you want to install {len(installable_packages)} packages?').ask():
+            workspace.install(' '.join(installable_packages))
 
 
 @cli.command()

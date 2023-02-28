@@ -1,3 +1,6 @@
+from typing import List
+from typing import Tuple
+
 import os
 import subprocess
 from aurmr_setup.core.workspace import Workspace
@@ -8,7 +11,22 @@ def get_sys_distributor():
 def get_sys_codename(): 
     cmd = 'lsb_release -c -s'
 
-def get_packages(workspace: Workspace):
+
+def filter_packages(packages: List[str]) -> Tuple[List[str], List[str]]:  
+    from aurmr_setup.utils import robostack_utils
+    installable_packages, missing_packages = [], []
+
+    for p in packages:
+        if p in robostack_utils.packages:
+            installable_packages.append(p)
+        else:
+            missing_packages.append(p)
+
+
+    return installable_packages, missing_packages
+
+
+def find_required_dependencies(workspace: Workspace) -> List[str]:
     """
     get list of packages
 
