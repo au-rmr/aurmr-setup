@@ -44,30 +44,3 @@ def add(package: str):
 
 
 
-
-def worksspace_option(f):
-    """
-    decorate for workspaces
-
-    use current workspace if already activated
-    """
-    @choice_option('--workspace', type=click.Choice(Workspace.list()))
-    def fn(**kwargs):
-        return f(kwargs)
-    return fn
-
-@cli.command()
-@choice_option('--workspace', type=click.Choice(Workspace.list()))
-def shell(workspace: str):
-    subprocess.call('ipython', shell=True)
-    #from IPython import embed
-    #embed(header=f'{workspace}')
-
-
-
-@cli.command()
-@choice_option('--workspace', type=click.Choice(Workspace.list()))
-def run(workspace: str):
-    subprocess.call('ipython', shell=True)
-    #from IPython import embed
-    #embed(header=f'{workspace}')
