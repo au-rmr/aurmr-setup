@@ -61,15 +61,16 @@ class Workspace:
 
     @classmethod
     @lru_cache()
-    def list(cls, list_archived: bool = False) -> List['Workspace']:
+    def list(cls, list_archived: bool = False) -> List[str]:
         from aurmr_setup.utils.workspace_utils import get_all_workspaces
         from aurmr_setup.utils.workspace_utils import get_archived_workspaces
-        workspaces = [Workspace(w) for w in sorted(get_all_workspaces())]
+        #workspaces = [Workspace(w) for w in sorted(get_all_workspaces())]
         if list_archived:
-            archives = [Workspace(w, True) for w in sorted(get_archived_workspaces())]
-            return archives + workspaces
+            #archives = [Workspace(w, True) for w in sorted(get_archived_workspaces())]
+            return get_all_workspaces() + get_archived_workspaces()
         else:
-            return workspaces
+            #return workspaces
+            return get_all_workspaces()
 
     def activate(self) -> None:
         with open(os.path.expanduser(ACTIVE_WORKSPACE), 'w') as f:
