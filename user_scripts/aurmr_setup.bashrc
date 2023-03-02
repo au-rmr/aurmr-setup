@@ -18,7 +18,7 @@ function activate() {
 		export WORKSPACE_NAME=$(cat $HOME/.active_workspace)
 	fi
 
-	echo "activating workspace $WORKSPACE_NAME"
+	echo "Activating workspace $WORKSPACE_NAME"
 	conda activate $WORKSPACE_NAME;
 	if [ -f $HOME/workspaces/$WORKSPACE_NAME/devel/setup.zsh ] && [ $SHELL = "/usr/bin/zsh" ]; then
 		source $HOME/workspaces/$WORKSPACE_NAME/devel/setup.zsh
@@ -33,5 +33,6 @@ function activate() {
 		source $HOME/workspaces/$WORKSPACE_NAME/user.bashrc
 
 	fi
-	
+
+	python --version
 }
