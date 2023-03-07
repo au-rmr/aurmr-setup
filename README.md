@@ -21,7 +21,7 @@ Install with
 pip install git+https://github.com/au-rmr/aurmr-setup.git
 ```
 
-Run `aurmr system-prepare` to configure the operating system. The step needs to
+Run `aurmr recipes system-prepare` to configure the operating system. The step needs to
 be only done once.
 
 ## Workspace usage
