@@ -42,6 +42,9 @@ vim-addon-manager install youcompleteme
 # install nvidia drivers
 sudo ubuntu-drivers autoinstall
 
+# for RT kernels IGNORE_PREEMPT_RT_PRESENCE=1  might help
+# see https://gist.github.com/pantor/9786c41c03a97bca7a52aa0a72fa9387
+
 # ceate ssh key
 
 ssh-keygen
