@@ -1,3 +1,4 @@
+import sys
 import logging
 
 import rich_click as click
