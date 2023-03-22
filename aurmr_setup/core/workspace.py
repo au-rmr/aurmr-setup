@@ -8,6 +8,7 @@ import logging
 from functools import lru_cache
 from importlib.resources import path
 
+
 import user_scripts
 
 from aurmr_setup.core.config import WorkspaceConfig
@@ -122,6 +123,7 @@ class Workspace:
 
     def import_from_archive(self):
         """
+        ..todo:: rollback if import fails
         """
         import shutil
 
