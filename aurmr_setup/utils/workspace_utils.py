@@ -33,21 +33,18 @@ def get_archived_workspaces() -> List[str]:
             if os.path.isdir(os.path.join(archive_dir, workspace))]
 
 
-
-
-
 def find_and_install_missing_packages(workspace: Workspace) -> List[str]:
     required_packages = environment_utils.get_packages(workspace)
     robostack_packages = [p for p in required_packages if p in robostack_utils.packages]
     missing_packages = [p for p in required_packages if p not in robostack_utils.packages]
     if required_packages:
-        console.print(f'Found {len(required_packages)} required packages')
-        console.print('Found required packages on robostack')
+        print(f'Found {len(required_packages)} required packages')
+        print('Found required packages on robostack')
         for p in robostack_packages:
-            console.print(f' - {p}')
-        console.print('Unable to find the following packages')
+            print(f' - {p}')
+        print('Unable to find the following packages')
         for p in missing_packages:
-            console.print(f' - {p}')
+            print(f' - {p}')
         if robostack_packages and questionary.confirm(f'Do you want to install {len(robostack_packages)} packages?').ask():
             workspace.install(' '.join(robostack_packages))
 
