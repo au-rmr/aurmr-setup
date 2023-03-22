@@ -1,17 +1,17 @@
+import sys
 import os
-import logging
-from functools import lru_cache
+
 from typing import List
 
 import subprocess
 
+import logging
+
+from functools import lru_cache
+
 
 from importlib.resources import contents as files
 from importlib.resources import path
-
-
-import system_scripts
-import user_scripts
 
 import rich_click as click
 from rich.progress import Progress
@@ -20,10 +20,13 @@ from click_prompt import choice_option
 
 import questionary
 
+from aurmr_setup.core.workspace import Workspace
+
 from aurmr_setup.cli.main_cli import cli
 from aurmr_setup.cli.main_cli import console
 
-from aurmr_setup.core.workspace import Workspace
+import system_scripts
+import user_scripts
 
 
 logger = logging.getLogger(__name__)
