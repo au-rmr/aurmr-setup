@@ -49,6 +49,8 @@ if [ -f ${user_setup_script} ]; then
 fi
 
 export PATH=$HOME/.local/bin:\$PATH
+export PROMPT='%(!.%{%F{yellow}%}.)\$USER @ %{\$fg[white]%}%M %{\$fg_bold[red]%}➜ %{\$fg_bold[green]%}%p %{\$fg[cyan]%}%c %{\$fg_bold[blue]%}\$(git_prompt_info)%{\$fg_bold[blue]%} % %{\$reset_color%}'
+export RPROMPT="[%D{%Y-%m-%d %T}]"
 EOF
 
 
