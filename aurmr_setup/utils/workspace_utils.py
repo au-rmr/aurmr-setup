@@ -4,6 +4,7 @@ import os
 from typing import List
 
 from aurmr_setup.core.workspace import Workspace
+from aurmr_setup.core.workspace import get_active_workspace
 from aurmr_setup.core.config import system_config
 
 from aurmr_setup.utils import robostack_utils
@@ -11,6 +12,11 @@ from aurmr_setup.utils import environment_utils
 
 logger = logging.getLogger(__name__)
 
+
+def get_active_workspace_path() -> str:
+    workspace_name = get_active_workspace()
+    if workspace_name:
+        return Workspace(workspace_name).full_path
 
 def get_all_workspaces() -> List[str]:
     workspace_dir = os.path.expanduser(system_config.WORKSPACE_DIR)
