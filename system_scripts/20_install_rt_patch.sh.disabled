@@ -6,7 +6,17 @@ For more information see the tutorial
 
 https://chenna.me/blog/2020/02/23/how-to-setup-preempt-rt-on-ubuntu-18-04/
 https://wiki.archlinux.org/title/Realtime_kernel_patchset
+
+
+WARNING this kernel is no longer supported. See
+
+https://wiki.linuxfoundation.org/realtime/preempt_rt_versions
+
+for supported kernel versions and patches
 """
+
+echo "Press any key to continue"
+read
 
 # kernel version without -generic flag
 KERNEL_VERSION=`uname -r | sed 's/-generic//g'`
@@ -31,6 +41,7 @@ sudo apt install rt-tests
 
 sudo cyclictest --smp -p98 -m -l 10000 -q | tee `date -I`_test_`uname -r`.log
 
+
 # download source files
 
 curl -SLO https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.9.1.tar.xz
@@ -40,10 +51,8 @@ curl -SLO https://www.kernel.org/pub/linux/kernel/projects/rt/5.9/patch-5.9.1-rt
 
 xz -d *.xz
 
-
-gpg2 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6092693E
-gpg2 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 2872E4CC
-
+# https://www.kernel.org/signature.html
+gpg2 --locate-keys torvalds@kernel.org gregkh@kernel.org
 
 gpg2 --verify linux-*.tar.sign
 gpg2 --verify patch-*.patch.sign
@@ -53,17 +62,18 @@ tar xf linux-*.tar
 cd linux-*/
 patch -p1 < ../patch-*.patch
 
-sed -i -e 's/CONFIG_SYSTEM_TRUSTED_KEYS="debian/canonical-certs.pem"/CONFIG_SYSTEM_TRUSTED_KEYS=""/g' .config
-
-echo "TODO: activate  PREEMPT"
-
+echo 'activate preempt:  Go to "General setup"  -> "Preemption Model (Voluntary Kernel Preemption (Desktop))" and select "Fully Preemptible Kernel (Real-Time)"'
+echo "Also modify other parameters"
+echo "Press any key to continue"
+read
+#make oldconfig
 make menuconfig
-make oldconfig
 
-make -j12
+sed -i -e 's/CONFIG_SYSTEM_TRUSTED_KEYS="debian\/canonical-certs.pem"/CONFIG_SYSTEM_TRUSTED_KEYS=""/g' .config
 
+#make -j12
 # https://stackoverflow.com/questions/56149191/linux-latest-stable-compilation-cannot-represent-change-to-vmlinux-gdb-py
-rm vmlinux-gdb.py
+#rm vmlinux-gdb.py
 
 make deb-pkg -j12
 
@@ -93,5 +103,5 @@ sudo systemctl daemon-reload && sudo systemctl restart cpufrequtils
 
 
 echo """reboot system and run
-cyclictest --smp -p98 -m | tee \$(date -I)_test_\$(uname -r).log
+sudo cyclictest --smp -p98 -m -l 10000 -q | tee `date -I`_test_`uname -r`.log
 """
