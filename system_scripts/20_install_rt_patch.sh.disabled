@@ -71,9 +71,10 @@ make menuconfig
 
 sed -i -e 's/CONFIG_SYSTEM_TRUSTED_KEYS="debian\/canonical-certs.pem"/CONFIG_SYSTEM_TRUSTED_KEYS=""/g' .config
 
-#make -j12
+make -j12
+
 # https://stackoverflow.com/questions/56149191/linux-latest-stable-compilation-cannot-represent-change-to-vmlinux-gdb-py
-#rm vmlinux-gdb.py
+rm vmlinux-gdb.py
 
 make deb-pkg -j12
 
