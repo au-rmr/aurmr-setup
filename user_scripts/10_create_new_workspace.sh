@@ -34,7 +34,7 @@ conda config --env --add channels conda-forge
 conda config --env --add channels robostack
 
 mamba install -y catkin_tools rosdep ros-noetic-catkin
-rosdep update
+rosdep update || true
 
 catkin build --workspace $HOME/workspaces/$WORKSPACE_NAME/ || true
 
