@@ -8,6 +8,8 @@ pip install -U pip
 pip install -U poetry
 
 
+# required for UR16e
+sudo apt install socat 
 
 sudo apt install build-essential git libssl-dev libelf-dev cmake cmake-curses-gui
 sudo apt install python3-sip python3-sip-dev python3-pykdl
