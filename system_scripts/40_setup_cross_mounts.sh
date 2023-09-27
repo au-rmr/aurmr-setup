@@ -20,10 +20,6 @@ if [[ $static_hostname == "aurmr-control" ]]; then
 	mkdir workspaces/perception
 fi
 
-cat | sudo tee -a /etc/hosts <<EOF
-192.168.10.101 control aurmr-control
-192.168.10.102 perception aurmr-perception
-EOF
 
 cat | sudo tee -a /etc/fstab <<EOF
 aurmr@${OTHER_HOST}:/home/aurmr/workspaces/  /workspaces/$OTHER_HOST/  fuse.sshfs x-systemd.automount,_netdev,user,exec,transform_symlinks,identityfile=/home/aurmr/.ssh/id_rsa,allow_other,default_permissions,uid=aurmr,gid=aurmr 0 0
