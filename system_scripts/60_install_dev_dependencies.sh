@@ -27,4 +27,3 @@ sudo apt install libpcl-dev
 sudo apt install gitk
 
 sudo apt install locate
-sudo apt install python3-pip
