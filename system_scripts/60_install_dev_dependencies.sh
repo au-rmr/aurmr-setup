@@ -29,3 +29,7 @@ sudo apt install gitk
 
 sudo apt install python3-pip
 
+
+
+# for Pod calibration to read barcodes
+sudo apt install libgdiplus libdmtx0b

@@ -8,6 +8,7 @@ import logging
 from functools import lru_cache
 from importlib.resources import path
 
+
 import user_scripts
 
 from aurmr_setup.core.config import WorkspaceConfig
@@ -135,7 +136,9 @@ class Workspace:
         subprocess.run(cmd, check=True, shell=True)
 
     def import_from_archive(self):
-        """ """
+        """
+        ..todo:: rollback if import fails
+        """
         import shutil
 
         env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
