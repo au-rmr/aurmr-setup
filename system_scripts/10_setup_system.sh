@@ -23,7 +23,7 @@ EOF
 sudo apt purge whoopsie
 
 # add essential tools
-sudo apt install vim tmux fzf zsh htop curl git
+sudo apt install vim tmux fzf zsh htop curl git rsync
 sudo apt install net-tools
 sudo apt install lm-sensors
 
@@ -46,19 +46,15 @@ sudo ubuntu-drivers autoinstall
 # see https://gist.github.com/pantor/9786c41c03a97bca7a52aa0a72fa9387
 
 # ceate ssh key
-
 ssh-keygen
 
 # create workspace
 
 mkdir $HOME/workspaces
 
-
-
 sudo apt install locales
 sudo locale-gen en_US en_US.UTF-8
 sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-
 
 
 sudo apt install software-properties-common
