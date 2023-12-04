@@ -11,6 +11,7 @@ from importlib.resources import path
 import user_scripts
 
 from aurmr_setup.core.config import WorkspaceConfig
+from aurmr_setup.core.config import system_config
 
 logger = logging.getLogger(__name__)
 
@@ -34,12 +35,10 @@ class Workspace:
     @property
     def full_path(self):
         if self.archived:
-            archive_dir = os.path.join(WORKSPACE_DIR, ARCHIVE_DIR)
-            workspace_full_path = os.path.join(archive_dir, self.workspace_name)
+            return os.path.join(system_config.archive_path, self.workspace_name)
         else:
-            workspace_full_path = os.path.join(WORKSPACE_DIR, self.workspace_name)
-        workspace_full_path = os.path.expanduser(workspace_full_path)
-        return workspace_full_path
+            return os.path.join(system_config.workspace_path, self.workspace_name)
+
 
     @property
     def src_path(self):
@@ -162,9 +161,7 @@ class Workspace:
         cmd = f"conda env export -n {self.workspace_name} -f {env_file}"
         subprocess.run(cmd, check=True, shell=True)
 
-        target = os.path.join(WORKSPACE_DIR, ARCHIVE_DIR)
-        target = os.path.expanduser(target)
-        shutil.move(self.full_path, target)
+        shutil.move(self.full_path, system_config.archive_path)
 
         if remove_env:
             cmd = f"conda env remove -n {self.workspace_name}"
