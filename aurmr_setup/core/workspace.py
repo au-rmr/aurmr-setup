@@ -8,6 +8,7 @@ import logging
 from functools import lru_cache
 from importlib.resources import path
 
+
 import user_scripts
 
 from aurmr_setup.core.config import WorkspaceConfig
@@ -35,9 +36,9 @@ class Workspace:
     @property
     def full_path(self):
         if self.archived:
-            return os.path.join(system_config.archive_path, self.workspace_name)
+            return os.path.expanduser(os.path.join(system_config.ARCHIVE_DIR, self.workspace_name))
         else:
-            return os.path.join(system_config.workspace_path, self.workspace_name)
+            return os.path.expanduser(os.path.join(system_config.WORKSPACE_DIR, self.workspace_name))
 
 
     @property
@@ -135,13 +136,17 @@ class Workspace:
 
     def lock(self):
         cmd = f"chmod -R -w $HOME/miniconda3/envs/{self.workspace_name}"
+        #cmd = "chmod -R -w `conda config --show envs_dirs | awk '{print $2}' | head -n2 | tail -n1`"
+        #cmd = cmd + "/" + self.workspace_name
         subprocess.run(cmd, check=True, shell=True)
         cmd = f"chmod -R -w $HOME/workspaces/{self.workspace_name}/src"
         subprocess.run(cmd, check=True, shell=True)
 
 
     def import_from_archive(self):
-        """ """
+        """
+        ..todo:: rollback if import fails
+        """
         import shutil
 
         env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
