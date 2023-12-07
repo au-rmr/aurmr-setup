@@ -87,6 +87,21 @@ def remove_workspace(workspace):
         workspace.remove()
 
 
+
+@choice_option("--workspace", type=click.Choice(Workspace.list()), prompt="Select the workspace to lock",
+)
+@cli.command()
+def lock(workspace: str):
+    """
+    Locks an existing workspace. I.e. source folder and conda environment will be read-only
+    """
+    workspace = Workspace(workspace)
+    if questionary.confirm(
+        f"Do you really want to lock the workspace {workspace}", default=False
+    ).ask():
+        workspace.lock()
+
+
 @click.option("--to-workspace", prompt="Name of the new workspace")
 @choice_option(
     "--from-workspace",
