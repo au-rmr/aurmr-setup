@@ -133,6 +133,13 @@ class Workspace:
         cmd = f"mamba install {package}"
         subprocess.run(cmd, check=True, shell=True)
 
+    def lock(self):
+        cmd = f"chmod -R -w $HOME/miniconda3/envs/{self.workspace_name}"
+        subprocess.run(cmd, check=True, shell=True)
+        cmd = f"chmod -R -w $HOME/workspaces/{self.workspace_name}/src"
+        subprocess.run(cmd, check=True, shell=True)
+
+
     def import_from_archive(self):
         """ """
         import shutil
