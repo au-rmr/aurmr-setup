@@ -1,6 +1,6 @@
 #!/bin/bash -exu
 
-sudo apt install zsh
+sudo apt install zsh fzf
 
 
 aurmr_dir=$(dirname "$0")
