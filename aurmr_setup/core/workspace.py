@@ -16,11 +16,6 @@ from aurmr_setup.core.config import system_config
 
 logger = logging.getLogger(__name__)
 
-WORKSPACE_DIR = "~/workspaces/"
-ACTIVE_WORKSPACE = "~/.active_workspace"
-ARCHIVE_DIR = "archive"
-ENVIRONMENT_FILE = "environment.yml"
-
 
 def get_active_workspace():
     workspace_name = os.environ.get("WORKSPACE_NAME", None)
@@ -31,18 +26,17 @@ class Workspace:
     def __init__(self, workspace_name: str, archived: bool = False):
         self.workspace_name = workspace_name
         self.archived = archived
-        self.config = WorkspaceConfig()
+        self.config = WorkspaceConfig(workspace_name)
 
     @property
-    def full_path(self):
+    def full_path(self) -> str:
         if self.archived:
-            return os.path.expanduser(os.path.join(system_config.ARCHIVE_DIR, self.workspace_name))
+            return system_config.archive_path, self.workspace_name)
         else:
-            return os.path.expanduser(os.path.join(system_config.WORKSPACE_DIR, self.workspace_name))
-
+            return os.path.join(system_config.workspace_path, self.workspace_name)
 
     @property
-    def src_path(self):
+    def src_path(self) -> str:
         return os.path.join(self.full_path, "src")
 
     @classmethod
@@ -75,7 +69,7 @@ class Workspace:
             return get_all_workspaces()
 
     def activate(self) -> None:
-        with open(os.path.expanduser(ACTIVE_WORKSPACE), "w") as f:
+        with open(self.system_config.active_workspace_file, "w") as f:
             f.write(str(self.workspace_name))
 
     def clone(self, other):
@@ -149,11 +143,11 @@ class Workspace:
         """
         import shutil
 
-        env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
+        env_file = os.path.join(self.full_path, system_config.ENVIRONMENT_FILE)
         cmd = f"conda env create -f {env_file}"
         subprocess.run(cmd, check=True, shell=True)
 
-        target = os.path.expanduser(WORKSPACE_DIR)
+        target = system_config.workspace_path
         shutil.move(self.full_path, target)
 
         self.archived = False
@@ -162,11 +156,11 @@ class Workspace:
         """ """
         import shutil
 
-        env_file = os.path.join(self.full_path, ENVIRONMENT_FILE)
+        env_file = os.path.join(self.full_path, system_config.ENVIRONMENT_FILE)
 
         if os.path.exists(env_file) and not overwrite_export:
             logger.error(
-                f"Unable to export environment. {ENVIRONMENT_FILE} already exists"
+                f"Unable to export environment. {system_config.ENVIRONMENT_FILE} already exists"
             )
             return
 
