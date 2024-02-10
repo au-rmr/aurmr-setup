@@ -22,6 +22,16 @@ logger = logging.getLogger(__name__)
 
 
 @cli.command()
+@choice_option("--workspace", type=click.Choice(Workspace.list() + ["new"]))
+@click.option("--cmd", prompt="Command to run")
+def run(workspace: str, cmd: str):
+    """
+    Run a command inside a given workspace
+    """
+    return Workspace(workspace).run(cmd)
+
+
+@cli.command()
 @click.option("--workspace_name", prompt="Name of the new workspace")
 @choice_option("--python-version", type=click.Choice(["3.8", "3.9"]))
 @choice_option("--rosdistro", type=click.Choice(["noetic"]))

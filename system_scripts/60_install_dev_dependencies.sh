@@ -27,3 +27,6 @@ sudo apt install libpcl-dev
 sudo apt install gitk
 
 sudo apt install locate
+
+# for Pod calibration to read barcodes
+sudo apt install libgdiplus libdmtx0b

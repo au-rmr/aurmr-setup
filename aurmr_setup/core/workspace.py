@@ -181,5 +181,13 @@ class Workspace:
 
         self.archived = True
 
+
+    def run(self, cmd):
+        with path(user_scripts, "wrapper_run.sh") as wrapper_script:
+            cmd = f"conda run -n {self.workspace_name} {wrapper_script} {cmd}"
+            subprocess.run(cmd, check=True, shell=True)
+
+
+
     def __str__(self):
         return self.workspace_name
