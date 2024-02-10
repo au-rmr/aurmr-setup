@@ -69,7 +69,7 @@ class Workspace:
             return get_all_workspaces()
 
     def activate(self) -> None:
-        with open(self.system_config.active_workspace_file, "w") as f:
+        with open(system_config.active_workspace_file, "w") as f:
             f.write(str(self.workspace_name))
 
     def clone(self, other):

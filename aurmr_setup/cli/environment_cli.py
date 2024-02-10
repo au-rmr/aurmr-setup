@@ -42,4 +42,7 @@ def add(package: str):
     workspace = Workspace(workspace_name)
     workspace.install(package)
 
-    find_and_install_missing_packages(workspace)
+    try:
+        find_and_install_missing_packages(workspace)
+    except subprocess.CalledProcessError as ex:
+        logging.error("Unable to install package %s. Exception is %s", package, ex)

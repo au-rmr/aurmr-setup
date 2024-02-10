@@ -84,7 +84,10 @@ def remove_workspace(workspace):
     if questionary.confirm(
         f"Do you really want to remove the workspace {workspace}", default=False
     ).ask():
-        workspace.remove()
+        try:
+            workspace.remove()
+        except subprocess.CalledProcessError as ex:
+            logger.error("Unable to remove workspace %s. Exception is %s", workspace, ex)
 
 
 
