@@ -31,7 +31,7 @@ class Workspace:
     @property
     def full_path(self) -> str:
         if self.archived:
-            return system_config.archive_path, self.workspace_name)
+            return os.path.join(system_config.archive_path, self.workspace_name)
         else:
             return os.path.join(system_config.workspace_path, self.workspace_name)
 

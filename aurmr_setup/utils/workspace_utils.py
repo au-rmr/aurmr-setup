@@ -19,7 +19,7 @@ def get_active_workspace_path() -> str:
         return Workspace(workspace_name).full_path
 
 def get_all_workspaces() -> List[str]:
-    workspace_dir = os.path.expanduser(system_config.WORKSPACE_DIR)
+    workspace_dir = os.path.expanduser(system_config.workspace_path)
     if not os.path.isdir(workspace_dir):
         logger.error(
             "Workspace folder does not exists. Please create %s", workspace_dir
