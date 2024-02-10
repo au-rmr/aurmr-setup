@@ -143,7 +143,7 @@ class Workspace:
         """
         import shutil
 
-        env_file = os.path.join(self.full_path, system_config.ENVIRONMENT_FILE)
+        env_file = os.path.join(self.full_path, system_config.ENVIRONMENT_FILENAME)
         cmd = f"conda env create -f {env_file}"
         subprocess.run(cmd, check=True, shell=True)
 
@@ -156,11 +156,11 @@ class Workspace:
         """ """
         import shutil
 
-        env_file = os.path.join(self.full_path, system_config.ENVIRONMENT_FILE)
+        env_file = os.path.join(self.full_path, system_config.ENVIRONMENT_FILENAME)
 
         if os.path.exists(env_file) and not overwrite_export:
             logger.error(
-                f"Unable to export environment. {system_config.ENVIRONMENT_FILE} already exists"
+                f"Unable to export environment. {system_config.ENVIRONMENT_FILENAME} already exists"
             )
             return
 
