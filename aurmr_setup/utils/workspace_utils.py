@@ -27,7 +27,7 @@ def get_all_workspaces() -> List[str]:
         return []
     return [
         workspace
-        for workspace in os.listdir(workspace_dir)
+        for workspace in sorted(os.listdir(workspace_dir))
         if os.path.isdir(os.path.join(workspace_dir, workspace))
         and not workspace == system_config.ARCHIVE_DIRNAME
     ]
@@ -39,7 +39,7 @@ def get_archived_workspaces() -> List[str]:
         return []
     return [
         workspace
-        for workspace in os.listdir(system_config.archive_path)
+        for workspace in sorted(os.listdir(system_config.archive_path))
         if os.path.isdir(os.path.join(system_config.archive_path, workspace))
     ]
 
