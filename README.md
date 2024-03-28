@@ -18,7 +18,7 @@ To create a new workspace just type `aurmr init`. In the next step you can use
 Install with
 
 ```sh
-pip install git+https://github.com/au-rmr/aurmr-setup.git
+pipx install git+https://github.com/au-rmr/aurmr-setup.git
 ```
 
 Run `aurmr recipes system-prepare` to configure the operating system. The step needs to
