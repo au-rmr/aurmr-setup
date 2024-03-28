@@ -27,3 +27,7 @@ sudo apt install libpcl-dev
 sudo apt install gitk
 
 sudo apt install locate
+
+
+sudo apt install pipx python3.8-venv
+
