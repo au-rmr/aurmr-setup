@@ -5,13 +5,11 @@ import time
 
 class ProcessMonitor:
 
-
     def status(self, env_dir: str):
 
         status = []
 
         fun = partial(ProcessMonitor.filter_by_exe, env_dir)
-
 
         for p in filter(fun, psutil.process_iter()):
 
@@ -32,9 +30,8 @@ class ProcessMonitor:
         for p in filter(fun, psutil.process_iter()):
             p.terminate()
             terminated.append(f"{p.pid} - {p.name()}")
-        
+
         return terminated
-    
 
     def kill(self, env_dir: str):
         terminated = []
@@ -52,7 +49,6 @@ class ProcessMonitor:
             terminated.append(f"{p.pid} - {p.name()}")
 
         return terminated
-
 
     @classmethod
     def filter_by_exe(cls, env_dir, p):

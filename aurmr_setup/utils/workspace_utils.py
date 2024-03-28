@@ -18,6 +18,7 @@ def get_active_workspace_path() -> str:
     if workspace_name:
         return Workspace(workspace_name).full_path
 
+
 def get_all_workspaces() -> List[str]:
     workspace_dir = os.path.expanduser(system_config.workspace_path)
     if not os.path.isdir(workspace_dir):
@@ -35,7 +36,10 @@ def get_all_workspaces() -> List[str]:
 
 def get_archived_workspaces() -> List[str]:
     if not os.path.isdir(system_config.archive_path):
-        logger.error("Archive folder does not exists. Please create %s", system_config.archive_path)
+        logger.error(
+            "Archive folder does not exists. Please create %s",
+            system_config.archive_path,
+        )
         return []
     return [
         workspace
@@ -46,6 +50,7 @@ def get_archived_workspaces() -> List[str]:
 
 def find_and_install_missing_packages(workspace: Workspace) -> List[str]:
     import questionary
+
     required_packages = environment_utils.get_packages(workspace)
     robostack_packages = [p for p in required_packages if p in robostack_utils.packages]
     missing_packages = [

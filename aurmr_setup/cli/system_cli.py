@@ -45,6 +45,7 @@ def start(script: str):
         logger.info("Running %s", script_full_path)
         subprocess.run(script_full_path, check=True)
 
+
 @cli.command()
 def stop():
     monitor = ProcessMonitor()
@@ -52,6 +53,7 @@ def stop():
         console.print(p)
     for p in monitor.kill(system_config.conda_env_dir):
         console.print(p)
+
 
 @cli.command()
 def status():

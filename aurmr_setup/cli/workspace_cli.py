@@ -87,11 +87,15 @@ def remove_workspace(workspace):
         try:
             workspace.remove()
         except subprocess.CalledProcessError as ex:
-            logger.error("Unable to remove workspace %s. Exception is %s", workspace, ex)
+            logger.error(
+                "Unable to remove workspace %s. Exception is %s", workspace, ex
+            )
 
 
-
-@choice_option("--workspace", type=click.Choice(Workspace.list()), prompt="Select the workspace to lock",
+@choice_option(
+    "--workspace",
+    type=click.Choice(Workspace.list()),
+    prompt="Select the workspace to lock",
 )
 @cli.command()
 def lock(workspace: str):

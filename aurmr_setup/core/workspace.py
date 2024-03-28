@@ -130,12 +130,11 @@ class Workspace:
 
     def lock(self):
         cmd = f"chmod -R -w $HOME/miniconda3/envs/{self.workspace_name}"
-        #cmd = "chmod -R -w `conda config --show envs_dirs | awk '{print $2}' | head -n2 | tail -n1`"
-        #cmd = cmd + "/" + self.workspace_name
+        # cmd = "chmod -R -w `conda config --show envs_dirs | awk '{print $2}' | head -n2 | tail -n1`"
+        # cmd = cmd + "/" + self.workspace_name
         subprocess.run(cmd, check=True, shell=True)
         cmd = f"chmod -R -w $HOME/workspaces/{self.workspace_name}/src"
         subprocess.run(cmd, check=True, shell=True)
-
 
     def import_from_archive(self):
         """
