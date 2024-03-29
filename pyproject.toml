@@ -3,7 +3,7 @@ name = "aurmr-setup"
 version = "0.1.0"
 description = ""
 authors = ["Markus Grotz <grotz@uw.edu>"]
-packages = [{include = "aurmr_setup"}, {include = "system_scripts"}, {include = "user_scripts"}]
+packages = [{include = "aurmr_setup"}, {include = "system_scripts"}, {include = "user_scripts"}, {include = "launch_scripts"}]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
