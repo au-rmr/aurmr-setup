@@ -8,10 +8,8 @@ https://chenna.me/blog/2020/02/23/how-to-setup-preempt-rt-on-ubuntu-18-04/
 https://wiki.archlinux.org/title/Realtime_kernel_patchset
 
 
-WARNING this kernel is no longer supported. See
-
+See
 https://wiki.linuxfoundation.org/realtime/preempt_rt_versions
-
 for supported kernel versions and patches
 """
 
@@ -21,14 +19,8 @@ read
 # kernel version without -generic flag
 KERNEL_VERSION=`uname -r | sed 's/-generic//g'`
 
-#if [ "${KERNEL_VERSION}" != "5.15.0-41" ]; then
-#    echo "Script was written for a different kernel version"
-#    exit 1
-#fi
-
 TEMP_DIR=$(mktemp -d -p $HOME rt_patch_XXXXXXXXXX)
 cd $TEMP_DIR
-
 
 
 # install dependencies
@@ -38,21 +30,24 @@ sudo apt install cpufrequtils
 sudo apt install rt-tests
 
 # testing
-
 sudo cyclictest --smp -p98 -m -l 10000 -q | tee `date -I`_test_`uname -r`.log
 
 
 # download source files
+curl -SLO https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.15.129.tar.xz
+curl -SLO https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.15.129.tar.sign
+curl -SLO https://cdn.kernel.org/pub/linux/kernel/projects/rt/5.15/patch-5.15.129-rt67.patch.xz
+curl -SLO https://cdn.kernel.org/pub/linux/kernel/projects/rt/5.15/patch-5.15.129-rt67.patch.sign
 
-curl -SLO https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.9.1.tar.xz
-curl -SLO https://www.kernel.org/pub/linux/kernel/v5.x/linux-5.9.1.tar.sign
-curl -SLO https://www.kernel.org/pub/linux/kernel/projects/rt/5.9/patch-5.9.1-rt20.patch.xz
-curl -SLO https://www.kernel.org/pub/linux/kernel/projects/rt/5.9/patch-5.9.1-rt20.patch.sign
-
+# extract source files
 xz -d *.xz
 
-# https://www.kernel.org/signature.html
+# Locate public keys for signature. See https://www.kernel.org/signature.html
 gpg2 --locate-keys torvalds@kernel.org gregkh@kernel.org
+
+# Locate public keys for RT Patch
+gpg --keyserver hkps://keyserver.ubuntu.com --receive-keys AD85102A6BE1CDFE9BCA84F36CEF3D27CA5B141E
+
 
 gpg2 --verify linux-*.tar.sign
 gpg2 --verify patch-*.patch.sign
@@ -73,9 +68,11 @@ sed -i -e 's/CONFIG_SYSTEM_TRUSTED_KEYS="debian\/canonical-certs.pem"/CONFIG_SYS
 
 make -j12
 
+# https://superuser.com/questions/925079/compile-linux-kernel-deb-pkg-target-without-generating-dbg-package
 # https://stackoverflow.com/questions/56149191/linux-latest-stable-compilation-cannot-represent-change-to-vmlinux-gdb-py
 rm vmlinux-gdb.py
 
+# using -j seems to break the build
 make deb-pkg -j12
 
 dpkg -i  ../*.deb
