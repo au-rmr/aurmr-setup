@@ -10,7 +10,7 @@ from importlib.resources import contents as files
 from importlib.resources import path
 
 
-from click_prompt import choice_option
+from click_prompt import choice_argument
 
 from aurmr_setup.core.workspace import Workspace
 from aurmr_setup.core.workspace import get_active_workspace
@@ -36,7 +36,7 @@ def get_launch_scripts() -> List[str]:
 
 
 @cli.command()
-@choice_option("--script", multiple=False, type=click.Choice(get_launch_scripts()))
+@choice_argument("script", multiple=False, type=click.Choice(get_launch_scripts()))
 def start(script: str):
 
     logger.info("Running script %s", script)
