@@ -28,6 +28,7 @@ sudo apt install gitk
 
 sudo apt install locate
 
-
 sudo apt install pipx python3.8-venv
 
+# for Pod calibration to read barcodes
+sudo apt install libgdiplus libdmtx0b
