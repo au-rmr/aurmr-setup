@@ -72,6 +72,17 @@ class Workspace:
         with open(system_config.active_workspace_file, "w") as f:
             f.write(str(self.workspace_name))
 
+
+    @classmethod
+    def last_workspace_name(cls) -> str:
+        with open(system_config.active_workspace_file, "r") as f:
+            last_workspace_name = f.readlines()
+            last_workspace_name = ''.join(last_workspace_name)
+            last_workspace_name = last_workspace_name.strip()
+
+        if Workspace(last_workspace_name).exists():
+            return last_workspace_name
+
     def clone(self, other):
         if isinstance(other, str):
             other = Workspace(other)
@@ -173,6 +184,14 @@ class Workspace:
             subprocess.run(cmd, check=True, shell=True)
 
         self.archived = True
+
+
+    def run(self, cmd):
+        with path(user_scripts, "wrapper_run.sh") as wrapper_script:
+            cmd = f"conda run -n {self.workspace_name} {wrapper_script} {cmd}"
+            subprocess.run(cmd, check=True, shell=True)
+
+
 
     def __str__(self):
         return self.workspace_name
