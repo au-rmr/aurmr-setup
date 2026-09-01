@@ -36,6 +36,36 @@ workspace, it does not count as done or as safe.
    ultimately just be "the capacitive gripper package, selected as an
    argument," not a permanent fork.
 
+## New workspace vs. branch in place
+
+A new workspace (via `aurmr clone`) isn't free — it's another conda env and
+another `build`/`devel` to eventually clean up. Default to branching inside
+a workspace you already have; only clone a new one when at least one is true:
+
+- **You need it to run concurrently** with something you already have
+  active/built — e.g. a demo running on one branch while you calibrate
+  against another, or nodes on inter and emmons operating at the same time.
+- **The task needs a different dependency flavor** than what's currently
+  checked out (different CUDA/Python/ROS distro) — clone from the trunk
+  built for *that* flavor, not your default one.
+- **You want to sandbox risky/experimental installs** without touching a
+  workspace you're relying on for something else.
+
+None of those true? Branch in place, rebuild, keep going — don't spin up a
+new workspace per small task. That habit is most of why `~/workspaces` has
+30+ entries per machine today.
+
+A brand-new dependency-flavor *trunk* (as opposed to a personal workspace)
+is rarer still and should be a deliberate, discussed decision, not something
+one person does mid-task: only when two packages have a proven, unavoidable
+conflict that can't coexist in one conda env, and the split is durable
+enough to maintain long-term. At runtime, nodes from different trunks still
+form one ROS graph — each is launched from a terminal that has sourced the
+workspace built for its flavor (`activate trunk_x`, then `rosrun`/`roslaunch`
+just the nodes belonging to that flavor), all pointed at the same
+`ROS_MASTER_URI`. Packages that don't belong in a given flavor's build can
+carry a `CATKIN_IGNORE` file so `catkin build` skips them there.
+
 ## Known gaps in the tool itself
 
 - `aurmr lock` (`core/workspace.py`) chmod's the env and `src/` read-only,
