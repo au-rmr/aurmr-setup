@@ -23,6 +23,8 @@ from aurmr_setup.cli.main_cli import console
 
 logger = logging.getLogger(__name__)
 
+import questionary
+
 
 import launch_scripts
 
@@ -49,10 +51,17 @@ def start(script: str):
 @cli.command()
 def stop():
     monitor = ProcessMonitor()
-    for p in monitor.terminate(system_config.conda_env_dir):
+
+    for p in monitor.status(system_config.conda_env_dir):
         console.print(p)
-    for p in monitor.kill(system_config.conda_env_dir):
-        console.print(p)
+
+    #..todo:: ask for confirmation ...
+
+    #for p in monitor.terminate(system_config.conda_env_dir):
+    #    console.print(p)
+
+    #for p in monitor.kill(system_config.conda_env_dir):
+    #    console.print(p)
 
 
 @cli.command()

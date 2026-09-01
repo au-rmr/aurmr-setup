@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 @cli.command()
 @click.option("--workspace_name", prompt="Name of the new workspace")
-@choice_option("--python-version", type=click.Choice(["3.8", "3.9"]))
+@choice_option("--python-version", type=click.Choice(["3.8", "3.9", "3.11"]))
 @choice_option("--rosdistro", type=click.Choice(["noetic"]))
 def init(workspace_name: str, python_version: str, rosdistro: str):
     """
@@ -59,7 +59,7 @@ def list(all: bool):
 
 
 @cli.command()
-@choice_option("--workspace", type=click.Choice(Workspace.list() + ["new"]))
+@choice_option("--workspace", type=click.Choice(Workspace.list() + ["new"]), default=Workspace.last_workspace_name)
 def select(workspace: str):
     """
     Selects a workspace. Typically you want to run `activate` in your shell
