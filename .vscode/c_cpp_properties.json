@@ -1,0 +1,55 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/aurmr/workspaces/nick_logging/devel/include/**",
+        "/home/aurmr/miniconda3/envs/nick_logging/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Azure_Kinect_ROS_Driver/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_controllers_cartesian/cartesian_interface/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_controllers_cartesian/cartesian_trajectory_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_controllers_cartesian/cartesian_trajectory_interpolation/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_Driver/controller_stopper/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/dexnet_dataset_baseline/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/effort_controllers/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/force_torque_sensor_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/forward_command_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/gripper_action_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/imu_sensor_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/industrial_core/industrial_robot_client/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/industrial_robot_status_controller/industrial_robot_status_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/industrial_robot_status_controller/industrial_robot_status_interface/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/industrial_core/industrial_trajectory_filters/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/industrial_core/industrial_utils/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/joint_state_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/joint_trajectory_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_passthrough_controllers/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/position_controllers/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/robotiq/robotiq_2f_gripper_action_server/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/robotiq/robotiq_2f_gripper_control/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_scaled_controllers/scaled_joint_trajectory_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/industrial_core/simple_message/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_scaled_controllers/speed_scaling_interface/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_scaled_controllers/speed_scaling_state_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/tahoma_moveit_config/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_controllers_cartesian/twist_controller/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_Driver/ur_calibration/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_Client_Library/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/universal_robot/ur_kinematics/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/Universal_Robots_ROS_Driver/ur_robot_driver/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/usb_cam/include/**",
+        "/home/aurmr/workspaces/nick_logging/src/aurmr_tahoma/third-party/ros_controllers/velocity_controllers/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

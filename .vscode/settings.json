@@ -1,0 +1,10 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/aurmr/workspaces/nick_logging/devel/lib/python3.8/site-packages",
+        "/home/aurmr/miniconda3/envs/nick_logging/lib/python3.8/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/aurmr/workspaces/nick_logging/devel/lib/python3.8/site-packages",
+        "/home/aurmr/miniconda3/envs/nick_logging/lib/python3.8/site-packages"
+    ]
+}
